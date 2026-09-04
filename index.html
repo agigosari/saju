@@ -810,6 +810,114 @@
       <!-- =========================================================
            🌸 아래 만세력 보러가기 스페셜 섹션
            ========================================================= -->
+      
+      <!-- =========================================================
+           💞 (1) 다른 사람과 함께 보는 설레는 궁합 섹션
+           ========================================================= -->
+      <section class="m-card" id="gunghapCard" style="border: 2px solid #f472b6; background: linear-gradient(180deg, #ffffff 0%, #fff1f5 100%);">
+        <div style="text-align: center; margin-bottom: 12px;">
+          <span style="display: inline-block; background: #f43f5e; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; margin-bottom: 4px;">💞 커플 & 인연 궁합</span>
+          <h3 style="font-family: 'Noto Serif KR', serif; font-size: 1.25rem; font-weight: 900; color: var(--pink-deep); margin-bottom: 4px;">
+            두 사람의 설레는 사주 궁합
+          </h3>
+          <p style="font-size: 0.8rem; color: var(--text-body);">상대방의 생년월일을 입력하면 연인·결혼·친구 궁합 지수를 정밀하게 분석해드려요 💌</p>
+        </div>
+
+        <form id="gunghapForm">
+          <div style="background: #ffffff; border: 1.5px dashed #fecdd3; border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
+            <div style="font-size: 0.8rem; font-weight: 800; color: var(--pink-main); margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+              <span>💘</span> 상대방(그 사람) 사주 정보
+            </div>
+
+            <!-- 상대방 이름 & 성별 -->
+            <div class="m-form-group m-row-2">
+              <div>
+                <label for="name2">상대방 이름/애칭</label>
+                <input type="text" id="name2" value="그 사람" placeholder="이름" />
+              </div>
+              <div>
+                <label>상대방 성별</label>
+                <div class="m-segmented">
+                  <input type="radio" id="gM2" name="gender2" value="M" />
+                  <label for="gM2">남 (男)</label>
+                  <input type="radio" id="gF2" name="gender2" value="F" checked />
+                  <label for="gF2">여 (女)</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- 상대방 달력 -->
+            <div class="m-form-group">
+              <label>상대방 달력</label>
+              <div class="m-segmented">
+                <input type="radio" id="cSol2" name="sl_cal2" value="S" checked />
+                <label for="cSol2">양력</label>
+                <input type="radio" id="cLun2" name="sl_cal2" value="L" />
+                <label for="cLun2">음력</label>
+                <input type="radio" id="cLeap2" name="sl_cal2" value="Z" />
+                <label for="cLeap2">윤달</label>
+              </div>
+            </div>
+
+            <!-- 상대방 생년월일 -->
+            <div class="m-form-group">
+              <label>상대방 생년월일</label>
+              <div class="birth-select-row">
+                <select id="birthYear2"></select>
+                <select id="birthMonth2"></select>
+                <select id="birthDay2"></select>
+              </div>
+            </div>
+
+            <!-- 상대방 태어난 시간 -->
+            <div class="m-form-group" style="margin-bottom: 0;">
+              <label for="birthHour2">상대방 태어난 시간</label>
+              <select id="birthHour2">
+                <option value="">시간 모름 (출생시 미반영)</option>
+                <option value="00">朝子시 (00:00 ~ 01:30)</option>
+                <option value="02">丑시 (01:31 ~ 03:30)</option>
+                <option value="04">寅시 (03:31 ~ 05:30)</option>
+                <option value="06">卯시 (05:31 ~ 07:30)</option>
+                <option value="08">辰시 (07:31 ~ 09:30)</option>
+                <option value="10">巳시 (09:31 ~ 11:30)</option>
+                <option value="12">午시 (11:31 ~ 13:30)</option>
+                <option value="14">未시 (13:31 ~ 15:30)</option>
+                <option value="16">申시 (15:31 ~ 17:30)</option>
+                <option value="18">酉시 (17:31 ~ 19:30)</option>
+                <option value="20">戌시 (19:31 ~ 21:30)</option>
+                <option value="22">亥시 (21:31 ~ 23:30)</option>
+                <option value="24">夜子시 (23:31 ~ 24:00)</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-m-submit" style="background: linear-gradient(135deg, #e11d48, #f43f5e); margin-top: 0;">
+            <span>💘</span>
+            <span>두 사람의 설레는 궁합 분석하기 💞</span>
+          </button>
+        </form>
+
+        <!-- 궁합 로딩 -->
+        <div id="gunghapLoading" style="display: none; text-align: center; padding: 24px 0;">
+          <div class="loading-heart" style="font-size: 2rem;">💘</div>
+          <p style="font-size: 0.9rem; font-weight: 800; color: var(--pink-deep); margin-top: 6px;">두 사람의 인연과 궁합을 계산하고 있어요 🌸</p>
+        </div>
+
+        <!-- 궁합 결과 카드 -->
+        <div id="gunghapResult" style="display: none; margin-top: 14px; animation: slideUp 0.3s ease;">
+          <div style="background: #fff0f3; border: 1.5px solid #f472b6; border-radius: var(--radius-sm); padding: 14px; text-align: center; margin-bottom: 12px;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--pink-main);" id="ghPairNames">수롱 ❤️ 그 사람</div>
+            <div style="font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 900; color: var(--pink-deep); margin: 4px 0;" id="ghScoreBadge">
+              💖 궁합 지수 88점 💖
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-body);" id="ghSummaryPhrase">서로의 부족한 오행을 채워주며 깊은 신뢰와 사랑을 쌓아가는 찰떡궁합이에요!</p>
+          </div>
+
+          <!-- 궁합 4대 테마 카드 -->
+          <div id="ghThemeCards"></div>
+        </div>
+      </section>
+
       <section class="manse-cta-banner">
         <span class="manse-badge">📖 정통 명리 전문 분석</span>
         <h3 class="manse-title">내 사주 정밀 만세력 보러가기 ➔</h3>
@@ -1062,6 +1170,192 @@
       }
       if (j) j.textContent = p.ji || '-';
       if (jt) jt.textContent = p.jiTenGod || '-';
+    }
+
+    
+    // 상대방 생년월일 셀렉트 초기화
+    const ySel2 = document.getElementById('birthYear2');
+    const mSel2 = document.getElementById('birthMonth2');
+    const dSel2 = document.getElementById('birthDay2');
+
+    for (let y = now.getFullYear(); y >= 1930; y--) {
+      const o = document.createElement('option');
+      o.value = y;
+      o.textContent = `${y}년`;
+      if (y === 1994) o.selected = true;
+      ySel2.appendChild(o);
+    }
+
+    for (let m = 1; m <= 12; m++) {
+      const o = document.createElement('option');
+      const val = String(m).padStart(2, '0');
+      o.value = val;
+      o.textContent = `${m}월`;
+      if (m === 11) o.selected = true;
+      mSel2.appendChild(o);
+    }
+
+    function updateDays2() {
+      const y = parseInt(ySel2.value, 10);
+      const m = parseInt(mSel2.value, 10);
+      const max = new Date(y, m, 0).getDate();
+      const cur = dSel2.value || '20';
+
+      dSel2.innerHTML = '';
+      for (let d = 1; d <= max; d++) {
+        const o = document.createElement('option');
+        const val = String(d).padStart(2, '0');
+        o.value = val;
+        o.textContent = `${d}일`;
+        if (val === cur || (d === 20 && !dSel2.value)) o.selected = true;
+        dSel2.appendChild(o);
+      }
+    }
+    ySel2.addEventListener('change', updateDays2);
+    mSel2.addEventListener('change', updateDays2);
+    updateDays2();
+
+    // 본인 성별에 맞춰 상대방 성별 자동 반전 기본값 세팅
+    document.querySelectorAll('input[name="gender"]').forEach(el => {
+      el.addEventListener('change', () => {
+        if (el.value === 'M') document.getElementById('gF2').checked = true;
+        else document.getElementById('gM2').checked = true;
+      });
+    });
+
+    // 궁합 폼 제출 핸들러
+    document.getElementById('gunghapForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const loading = document.getElementById('gunghapLoading');
+      const resultBox = document.getElementById('gunghapResult');
+      loading.style.display = 'block';
+      resultBox.style.display = 'none';
+
+      const myName = document.getElementById('userName').value.trim() || '나';
+      const myGender = document.querySelector('input[name="gender"]:checked').value;
+      const myCal = document.querySelector('input[name="sl_cal"]:checked').value;
+      const myYear = ySel.value;
+      const myMonth = mSel.value;
+      const myDay = dSel.value;
+      const myHour = document.getElementById('birthHour').value;
+
+      const name2 = document.getElementById('name2').value.trim() || '상대방';
+      const gender2 = document.querySelector('input[name="gender2"]:checked').value;
+      const sl_cal2 = document.querySelector('input[name="sl_cal2"]:checked').value;
+      const year2 = ySel2.value;
+      const month2 = mSel2.value;
+      const day2 = dSel2.value;
+      const hour2 = document.getElementById('birthHour2').value;
+
+      const payload = {
+        unse_code: 'B017',
+        name: myName,
+        gender: myGender,
+        sl_cal: myCal,
+        birth_year: myYear,
+        birth_month: myMonth,
+        birth_day: myDay,
+        birth_hour: myHour,
+        name2,
+        gender2,
+        sl_cal2,
+        birth_year2: year2,
+        birth_month2: month2,
+        birth_day2: day2,
+        birth_hour2: hour2
+      };
+
+      try {
+        const res = await fetch('http://localhost:3000/api/saju', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('API 응답 실패');
+        const json = await res.json();
+        if (!json.success || !json.data.sections || json.data.sections.length === 0) throw new Error('궁합 데이터 없음');
+        renderGunghapResult(json.data, payload);
+      } catch (err) {
+        console.warn('API 실패 또는 독립 실행 환경, 내장 러블리 궁합 엔진 적용:', err);
+        const fbData = getFallbackGunghapData(payload);
+        renderGunghapResult(fbData, payload);
+      } finally {
+        loading.style.display = 'none';
+        resultBox.style.display = 'block';
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+
+    function renderGunghapResult(data, payload) {
+      document.getElementById('ghPairNames').textContent = `${payload.name} 💖 ${payload.name2}`;
+
+      // 4대 테마 카드 렌더링
+      const container = document.getElementById('ghThemeCards');
+      container.innerHTML = '';
+
+      let scores = [];
+      data.sections.forEach((sec, idx) => {
+        let score = 85;
+        const match = sec.content.match(/([0-9]{2,3})%/);
+        if (match) score = parseInt(match[1], 10);
+        else score = 80 + (idx * 4);
+        scores.push(score);
+
+        const cleanTit = sec.title.replace(/연인궁합연인궁합/g, '연인 궁합 👩‍❤️‍👨')
+                                  .replace(/결혼궁합결혼궁합/g, '결혼 궁합 💍')
+                                  .replace(/친구궁합친구궁합/g, '친구 & 케미 궁합 ☕')
+                                  .replace(/직장 / 동료궁합직장 / 동료궁합/g, '동료 & 시너지 궁합 💼')
+                                  .replace(/(.{2,10})\1/, '$1');
+
+        const card = document.createElement('div');
+        card.className = 'acc-item open';
+        card.innerHTML = `
+          <div style="padding: 12px 14px; background: #fff; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #fecdd3;">
+            <span style="font-family: 'Noto Serif KR', serif; font-size: 0.95rem; font-weight: 800; color: var(--pink-deep);">🌸 ${cleanTit}</span>
+            <span style="background: var(--pink-main); color: #fff; font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: var(--radius-pill);">${score}점</span>
+          </div>
+          <div style="padding: 12px 14px; font-size: 0.86rem; line-height: 1.8; color: var(--text-body); background: #ffffff;">
+            ${sec.content.replace(/[0-9]{2,3}%/, '').trim()}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / (scores.length || 1));
+      document.getElementById('ghScoreBadge').textContent = `💖 궁합 지수 ${avgScore}점 💖`;
+      
+      let phrase = '서로의 부족한 오행을 채워주며 깊은 신뢰와 사랑을 쌓아가는 찰떡궁합이에요!';
+      if (avgScore >= 88) phrase = '말하지 않아도 마음이 통하는 천생연분! 함께할수록 운이 트이는 최고의 인연이에요 🌸';
+      else if (avgScore >= 75) phrase = '서로 배려하고 존중할 때 더욱 돈독해지는 예쁜 인연이에요 🎀';
+      document.getElementById('ghSummaryPhrase').textContent = phrase;
+    }
+
+    function getFallbackGunghapData(payload) {
+      const hash = (parseInt(payload.birth_year, 10) + parseInt(payload.birth_year2, 10) + parseInt(payload.birth_month, 10) * 3 + parseInt(payload.birth_day, 10)) % 15;
+      const baseScore = 80 + hash;
+
+      return {
+        title: '두 사람의 정통 명리 궁합',
+        sections: [
+          {
+            title: '연인 궁합',
+            content: `${baseScore}% 일단 연인이 되면 누구 못지않은 정열적인 사랑을 하게 됩니다. 서로 다른 듯 보이지만 본질적인 성향이 잘 어우러지며, 상대방의 장점을 따뜻하게 품어줄 수 있는 깊은 애정운을 품고 있습니다.`
+          },
+          {
+            title: '결혼 궁합',
+            content: `${Math.min(98, baseScore + 2)}% 서로를 향한 신뢰와 존중이 밑바탕이 되어 가정을 화목하게 이끌어갈 수 있는 부부운입니다. 작은 배려와 따뜻한 대화가 함께할 때 백년해로하는 행복한 가정을 완성합니다.`
+          },
+          {
+            title: '친구 & 케미 궁합',
+            content: `${Math.max(70, baseScore - 5)}% 취향과 유머 감각이 잘 맞아 함께 있으면 시간 가는 줄 모르는 단짝 케미를 자랑합니다. 힘든 일이 있을 때 서로의 든든한 버팀목이자 편안한 안식처가 되어줍니다.`
+          },
+          {
+            title: '동료 & 시너지 궁합',
+            content: `${baseScore - 2}% 함께 공동의 목표를 추구할 때 서로의 부족한 점을 보완해 주어 시너지 효과가 큽니다. 금전적인 조화와 성장의 기운이 함께 깃들어 있는 좋은 파트너십입니다.`
+          }
+        ]
+      };
     }
 
     // 만세력 보러가기 액션
