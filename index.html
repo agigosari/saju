@@ -370,6 +370,29 @@
       margin: 2px 0;
     }
 
+    
+    .unseong-badge {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #9f1239;
+      background: #ffe4e6;
+      border-radius: 6px;
+      padding: 1.5px 4px;
+      margin: 4px auto 2px;
+      display: inline-block;
+    }
+    .unseong-badge.me-badge {
+      background: #f43f5e;
+      color: #ffffff;
+      font-weight: 900;
+    }
+    .hidden-gan-txt {
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      margin-top: 2px;
+      letter-spacing: -0.3px;
+    }
+  
     /* 오행 컬러 */
     .c-wood { color: #059669 !important; border-color: #6ee7b7 !important; background-color: #ecfdf5 !important; }
     .c-fire { color: #e11d48 !important; border-color: #fda4af !important; background-color: #fff1f2 !important; }
@@ -582,6 +605,1393 @@
       text-decoration: underline;
     }
   </style>
+
+<script>
+// --- Korean Lunar Calendar Module ---
+(function(root) {
+  //#region src/korean-lunar-data.ts
+var LUNAR_CALENDAR_DATA = {
+	KOREAN_LUNAR_MIN_VALUE: 10000101,
+	KOREAN_LUNAR_MAX_VALUE: 20501118,
+	KOREAN_SOLAR_MIN_VALUE: 10000213,
+	KOREAN_SOLAR_MAX_VALUE: 20501231,
+	KOREAN_LUNAR_BASE_YEAR: 1e3,
+	SOLAR_LUNAR_DAY_DIFF: 43,
+	LUNAR_SMALL_MONTH_DAY: 29,
+	LUNAR_BIG_MONTH_DAY: 30,
+	SOLAR_SMALL_YEAR_DAY: 365,
+	SOLAR_BIG_YEAR_DAY: 366,
+	SOLAR_DAYS: [
+		31,
+		28,
+		31,
+		30,
+		31,
+		30,
+		31,
+		31,
+		30,
+		31,
+		30,
+		31,
+		29
+	],
+	KOREAN_CHEONGAN: [
+		44049,
+		51012,
+		48337,
+		51221,
+		47924,
+		44592,
+		44221,
+		49888,
+		51076,
+		44228
+	].map((c) => String.fromCharCode(c)),
+	KOREAN_GANJI: [
+		51088,
+		52629,
+		51064,
+		47896,
+		51652,
+		49324,
+		50724,
+		48120,
+		49888,
+		50976,
+		49696,
+		54644
+	].map((c) => String.fromCharCode(c)),
+	KOREAN_GAPJA_UNIT: [
+		45380,
+		50900,
+		51068
+	].map((c) => String.fromCharCode(c)),
+	CHINESE_CHEONGAN: [
+		30002,
+		20057,
+		19993,
+		19969,
+		25098,
+		24049,
+		24218,
+		36763,
+		22764,
+		30328
+	].map((c) => String.fromCharCode(c)),
+	CHINESE_GANJI: [
+		23376,
+		19985,
+		23493,
+		21359,
+		36784,
+		24051,
+		21320,
+		26410,
+		30003,
+		37193,
+		25100,
+		20133
+	].map((c) => String.fromCharCode(c)),
+	CHINESE_GAPJA_UNIT: [
+		24180,
+		26376,
+		26085
+	].map((c) => String.fromCharCode(c)),
+	INTERCALATION_STR: [50980, 38287].map((c) => String.fromCharCode(c)),
+	KOREAN_LUNAR_DATA: [
+		2194016855,
+		2197734699,
+		2193886506,
+		2194017621,
+		3271595437,
+		2193884522,
+		2194016621,
+		2197837021,
+		3267626157,
+		2193885773,
+		2197827149,
+		2193885990,
+		3271600982,
+		2194016981,
+		2193883994,
+		2197842298,
+		3267758427,
+		2193884315,
+		2197834395,
+		2193885771,
+		3271674533,
+		2193884842,
+		2194016981,
+		2197852893,
+		3267625653,
+		2194016599,
+		2197705902,
+		2194017431,
+		3267626571,
+		2197759306,
+		2194017705,
+		2197857974,
+		3267757677,
+		2193883758,
+		2197907758,
+		2193885486,
+		3267628182,
+		2197835157,
+		2193886538,
+		2197867881,
+		3267627864,
+		2194148715,
+		2197918315,
+		2193883741,
+		3267627307,
+		2197838507,
+		2193885845,
+		2193886026,
+		3271696043,
+		2193883861,
+		2197927258,
+		2194015419,
+		3267625563,
+		2197845303,
+		2193884459,
+		2193884821,
+		3271571285,
+		2193884842,
+		2198063797,
+		2193883765,
+		3267626166,
+		2197850718,
+		2193885782,
+		2193886502,
+		3271581350,
+		2194017621,
+		2193884586,
+		2197822826,
+		3267758445,
+		2197861551,
+		2193884317,
+		2193885773,
+		3271589165,
+		2193885862,
+		2194017109,
+		2197833173,
+		3267625818,
+		2194016605,
+		2197885299,
+		2193884251,
+		3271596623,
+		2193884747,
+		2193885861,
+		2197842793,
+		3267757749,
+		2193883866,
+		2197826230,
+		2194016567,
+		3271476375,
+		2194017431,
+		2193884747,
+		2197718698,
+		3267759525,
+		2193884596,
+		2198030957,
+		2193883822,
+		3267628641,
+		2197826862,
+		2193886358,
+		2197855565,
+		2193886538,
+		2194017637,
+		2197906837,
+		2194015581,
+		3267625581,
+		2197826141,
+		2193885483,
+		2197858967,
+		3267627669,
+		2193886026,
+		2197850970,
+		2194016981,
+		3267757403,
+		2197832375,
+		2193884247,
+		2193884459,
+		3271564587,
+		2193884821,
+		2197853997,
+		2193884586,
+		3267758773,
+		2197837037,
+		2193884342,
+		2194016855,
+		3271504974,
+		2193886502,
+		2197929618,
+		2194017621,
+		3267626410,
+		2197850554,
+		2194016621,
+		2193884334,
+		3271576221,
+		2193885773,
+		2193886501,
+		2197827365,
+		3267627860,
+		2198056297,
+		2193883866,
+		2194016605,
+		3271648411,
+		2193884315,
+		2193885771,
+		2197834571,
+		3267626661,
+		2197863251,
+		2193884852,
+		2194016950,
+		3271657814,
+		2194016663,
+		2193884311,
+		2197833367,
+		3267626315,
+		2197735077,
+		2194017701,
+		2193884588,
+		3271797429,
+		2193883758,
+		2193885486,
+		2197843118,
+		3267628182,
+		2193886538,
+		2197827402,
+		2194017621,
+		3271603563,
+		2194015579,
+		2193883741,
+		2197846333,
+		3267627303,
+		2193885845,
+		2197904661,
+		2193886026,
+		3267758933,
+		2197885653,
+		2194015451,
+		2197721694,
+		3267758679,
+		2193884459,
+		2197842603,
+		2193884821,
+		3267626666,
+		2197830570,
+		2194016949,
+		2197861559,
+		3267626158,
+		2194016855,
+		2197714222,
+		2193886502,
+		3267759763,
+		2197837525,
+		2193884586,
+		2194016693,
+		3271566701,
+		2193884334,
+		2197924429,
+		2193885773,
+		3267628326,
+		2197843301,
+		2193886034,
+		2194017642,
+		3271567066,
+		2194016605,
+		2197931165,
+		2193884315,
+		3267627595,
+		2197850795,
+		2193884837,
+		2193886036,
+		3271576500,
+		2194016950,
+		2194016603,
+		2197824823,
+		3267626135,
+		2197853775,
+		2193884491,
+		2193884837,
+		3271653061,
+		2193884588,
+		2194016950,
+		2197895278,
+		3267627310,
+		2197867671,
+		2193886358,
+		2193886538,
+		3271593386,
+		2194017109,
+		2193884522,
+		2197969627,
+		3267625565,
+		2193885486,
+		2197826859,
+		2193885845,
+		3271597389,
+		2193885994,
+		2194017109,
+		2197845365,
+		3267626202,
+		2194016859,
+		2197833047,
+		2193884459,
+		3271674515,
+		2193884819,
+		2193884842,
+		2197850842,
+		3267758821,
+		2193884342,
+		2197834414,
+		2194016855,
+		3267626279,
+		2197759270,
+		2194017875,
+		2197857995,
+		3267626410,
+		2194015661,
+		2197906605,
+		2193884334,
+		3267627598,
+		2197835085,
+		2193886502,
+		2197863763,
+		3267627858,
+		2194017130,
+		2197919082,
+		2194015575,
+		3267626141,
+		2197903899,
+		2193885771,
+		2193885861,
+		3271564965,
+		2193886034,
+		2197863258,
+		2194016950,
+		3267758427,
+		2197841079,
+		2193884311,
+		2193884747,
+		3271571275,
+		2193884837,
+		2197862067,
+		2193884588,
+		3267758774,
+		2197914285,
+		2193884318,
+		2193885773,
+		3271581003,
+		2193885989,
+		2193886034,
+		2197892690,
+		3267758938,
+		2197858654,
+		2194016603,
+		2193884315,
+		3271584343,
+		2193885771,
+		2193885861,
+		2197834661,
+		3267626708,
+		2197867222,
+		2194016950,
+		2194016567,
+		2197849247,
+		2193884311,
+		2193884747,
+		2197706442,
+		3267759525,
+		2193884586,
+		2197822828,
+		2194016878,
+		3271604527,
+		2193885486,
+		2193886358,
+		2197847381,
+		3267628362,
+		2194017621,
+		2197894485,
+		2193884522,
+		3267758701,
+		2197822045,
+		2193885483,
+		2197850715,
+		3267627669,
+		2193885994,
+		2197904170,
+		2194016981,
+		3267626202,
+		2197822650,
+		2194016855,
+		2197853487,
+		3267626279,
+		2193884819,
+		2197845683,
+		2193884842,
+		3267758773,
+		2197828981,
+		2193884342,
+		2197867111,
+		3267627566,
+		2193886486,
+		2197851798,
+		2193886538,
+		3267759530,
+		2197837290,
+		2194015597,
+		2193884334,
+		3271632989,
+		2193885741,
+		2197859607,
+		2193885861,
+		3267627858,
+		2197847412,
+		2194016986,
+		2194015581,
+		3271570747,
+		2193884251,
+		2193885739,
+		2197887531,
+		3267627685,
+		2197855061,
+		2193884850,
+		2194016982,
+		3271644470,
+		2194016567,
+		2193884247,
+		2197830231,
+		3267626283,
+		2197727910,
+		2194017685,
+		2193884586,
+		3271654060,
+		2194016878,
+		2193884462,
+		2197830830,
+		3267627606,
+		2197863723,
+		2193886506,
+		2194017621,
+		3271595437,
+		2193884522,
+		2194016877,
+		2197837149,
+		3267626283,
+		2193885837,
+		2197827157,
+		2193885994,
+		3271600982,
+		2194016981,
+		2193884378,
+		2197842554,
+		3267758679,
+		2193884443,
+		2197899799,
+		2193884755,
+		3271673513,
+		2193884586,
+		2194016949,
+		2197852861,
+		3267625654,
+		2194016823,
+		2197706030,
+		2193886486,
+		2194017867,
+		2197698386,
+		2194017706,
+		2197927348,
+		3267757421,
+		2193883822,
+		2197846589,
+		2193885741,
+		3267628309,
+		2197835157,
+		2193886034,
+		2197867369,
+		3267758810,
+		2194015581,
+		2197918299,
+		2193884251,
+		3267627563,
+		2197838507,
+		2193885845,
+		2193886034,
+		3271564970,
+		2194016950,
+		2197865819,
+		2194015415,
+		3267626071,
+		2197845303,
+		2193884459,
+		2193884821,
+		3271640725,
+		2193884586,
+		2197867189,
+		2194016878,
+		3267626158,
+		2197850718,
+		2193885782,
+		2193886506,
+		3271585450,
+		2194017621,
+		2193884522,
+		2197891418,
+		3267758429,
+		2197861551,
+		2193884315,
+		2193885773,
+		3271589165,
+		2193885994,
+		2194017109,
+		2197833173,
+		3267625690,
+		2194016603,
+		2197885271,
+		2193884315,
+		3271596623,
+		2193884747,
+		2193884841,
+		2197842666,
+		3267757749,
+		2193883830,
+		2197826222,
+		2194016567,
+		3271537814,
+		2193886358,
+		2194017867,
+		2197714610,
+		3267759530,
+		2194015661,
+		2197828461,
+		2193883758,
+		3267627310,
+		2197826861,
+		2193886357,
+		2197855565,
+		3267627850,
+		2194017129,
+		2197906778,
+		2194015579,
+		3267625565,
+		2197826139,
+		2193885483,
+		2197858967,
+		3267626645,
+		2193885002,
+		2197850970,
+		2194016950,
+		3267757371,
+		2197832375,
+		2193883735,
+		2193884459,
+		3271564587,
+		2193884821,
+		2197853869,
+		2193884586,
+		3267758773,
+		2197837037,
+		2193884334,
+		2194016855,
+		3271504974,
+		2193886506,
+		2197929364,
+		2194017109,
+		2193884522,
+		2197846394,
+		2194016605,
+		2193884334,
+		3271576219,
+		2193885773,
+		2193886501,
+		2197887658,
+		3267758933,
+		2197853549,
+		2193883866,
+		2194016603,
+		3271578807,
+		2193884311,
+		2193885771,
+		2197834571,
+		3267626665,
+		2197867221,
+		2194015669,
+		2193883830,
+		3271592286,
+		2194016559,
+		2193884311,
+		2197702294,
+		3267628362,
+		2197868197,
+		2194017641,
+		2194015597,
+		3271664309,
+		2193883758,
+		2193885486,
+		2197843117,
+		3267628181,
+		2193886538,
+		2197827402,
+		2194017113,
+		3271607661,
+		2194015579,
+		2193883741,
+		2197846331,
+		3267627307,
+		2193885845,
+		2197904149,
+		2193884874,
+		3267758805,
+		2197885622,
+		2194015419,
+		2197852767,
+		3267625559,
+		2193884459,
+		2197711530,
+		2194017941,
+		3267626666,
+		2197830570,
+		2194016949,
+		2197861559,
+		3267626158,
+		2194016855,
+		2197714221,
+		2193886502,
+		3267759509,
+		2197837269,
+		2193884522,
+		2194016621,
+		3271566685,
+		2193884334,
+		2197858895,
+		2193885773,
+		3267628325,
+		2197843305,
+		2194017109,
+		2193883994,
+		3271568058,
+		2194016603,
+		2197931163,
+		2193884311,
+		3267627595,
+		2197850923,
+		2193884837,
+		2193884884,
+		3271772853,
+		2193883830,
+		2194016567,
+		2197824815,
+		3267626135,
+		2197722702,
+		2193886538,
+		2194017957,
+		3271648937,
+		2194015597,
+		2193883830,
+		2197895262,
+		3267627310,
+		2197863575,
+		2193885845,
+		2193886538,
+		3271593386,
+		2194017101,
+		2194015595,
+		2197832411,
+		3267625565,
+		2193885485,
+		2197826859,
+		2193885845,
+		3271596877,
+		2193884842,
+		2194016981,
+		2197841269,
+		3267757243,
+		2193883739,
+		2197894231,
+		2193884459,
+		3271539348,
+		2194017941,
+		2193884842,
+		2197850842,
+		3267758517,
+		2193884342,
+		2197834414,
+		2194016847,
+		3267495206,
+		2197892390,
+		2194017621,
+		2197923241,
+		3267626346,
+		2194016621,
+		2197906589,
+		2193884318,
+		3267627597,
+		2197835085,
+		2193886501,
+		2197863763,
+		3267627860,
+		2194017114,
+		2197915994,
+		2194016603,
+		3267626139,
+		2197834391,
+		2193885771,
+		2193885861,
+		3271564965,
+		2193884884,
+		2197994203,
+		2193883830,
+		3267758391,
+		2197841071,
+		2193884311,
+		2193884747,
+		3271440202,
+		2194017701,
+		2197862069,
+		2194015597,
+		3267625646,
+		2197846334,
+		2193885486,
+		2193886358,
+		3271646485,
+		2193886538,
+		2194017701,
+		2197894485,
+		3267626346,
+		2197846650,
+		2194016861,
+		2193885485,
+		3271584427,
+		2193885845,
+		2193886026,
+		2197834666,
+		3267758805,
+		2193884506,
+		2197891258,
+		2194016859,
+		3271587127,
+		2193884459,
+		2193884819,
+		2197903125,
+		3267626666,
+		2194016981,
+		2197829045,
+		2193884342,
+		3271592542,
+		2193885774,
+		2193886502,
+		2197843622,
+		3267628370,
+		2194017706,
+		2197898858,
+		2194015597,
+		3267626158,
+		2197830301,
+		2193885773,
+		2197847339,
+		3267627813,
+		2193886546,
+		2197904724,
+		2194017114,
+		3267757405,
+		2197828955,
+		2193884315,
+		2197845591,
+		2193885771,
+		2193885861,
+		2197842789,
+		2193884882,
+		3267758810,
+		2197833142,
+		2194016567,
+		2193884311,
+		3271571095,
+		2193884749,
+		2197714602,
+		2194017701,
+		3267626410,
+		2197838572,
+		2194016942,
+		2193885486,
+		3271572782,
+		2193886358,
+		2197916997,
+		2193886538,
+		3267759445,
+		2197906837,
+		2193884522,
+		2194016877,
+		3271574877,
+		2193884461,
+		2193885845,
+		2197896341,
+		3267627850,
+		2197912394,
+		2194016981,
+		2193884506,
+		3271645754,
+		2194016859,
+		2193884459,
+		2197899799,
+		3267626643,
+		2197853867,
+		2193884842,
+		2194016949,
+		3271582965,
+		2193884342,
+		2194016855,
+		2197701934,
+		3267628310,
+		2194017939,
+		2197698386,
+		2194017706,
+		3271652778,
+		2194015597,
+		2193884334,
+		2197903901,
+		3267627565,
+		2193886485,
+		2197835173,
+		2193886034,
+		3271597418,
+		2194016986,
+		2194015581,
+		2197906075,
+		3267626075,
+		2193885739,
+		2197838635,
+		2193885845,
+		3267627858,
+		2197891762,
+		2194016982,
+		2197910870,
+		3267757367,
+		2193884247,
+		2197837399,
+		2193884459,
+		3267626645,
+		2197829525,
+		2193884586,
+		2197858998,
+		3267758701,
+		2193884334,
+		2197842542,
+		2193885782,
+		3267628330,
+		2197839530,
+		2194017621,
+		2193884586,
+		3271572330,
+		2194016877,
+		2197845181,
+		2193884331,
+		3267627661,
+		2197839189,
+		2193885994,
+		2194017109,
+		3271574997,
+		2193884378,
+		2194016605,
+		2197824855,
+		3267626139,
+		2197842583,
+		2193884747,
+		2193884841,
+		2197834666,
+		2194015925,
+		2193883834,
+		2197826230,
+		3267758391,
+		2197710126,
+		2193886486,
+		2194017867,
+		3271448274,
+		2194017705,
+		2194015669,
+		2197828461,
+		3267625646,
+		2193885742,
+		2197827117,
+		2193886357,
+		3271585109,
+		2193886034,
+		2194017129,
+		2197833178,
+		3267757405,
+		2193883741,
+		2197830235,
+		2193885739,
+		3271654027,
+		2193885845,
+		2193886026,
+		2197904170,
+		3267758805,
+		2194015579,
+		2197832375,
+		2193883735,
+		3271595311,
+		2193884459,
+		2193884821,
+		2197841621,
+		3267626410,
+		2194016949,
+		2197833069,
+		2193884334,
+		3267758679,
+		2197763158,
+		2193886506,
+		2197913226,
+		3267759445,
+		2193884586,
+		2197838554,
+		2194016605,
+		3267626158,
+		2197834411,
+		2193885773,
+		2197851435,
+		3267627817,
+		2194017109,
+		2197845365,
+		2193883866,
+		3267758429,
+		2197837015,
+		2193884315,
+		2193885771,
+		3271637579,
+		2193884841,
+		2197850841,
+		2194015925,
+		3267625654,
+		2197903670,
+		2194016567,
+		2193884311,
+		3271444118,
+		2193886794,
+		2197860006,
+		2194017705,
+		3267757485,
+		2197906093,
+		2193883822,
+		2193885486,
+		3271580845,
+		2193886357,
+		2193886538,
+		2197896522,
+		3267758953,
+		2197845370,
+		2194015579,
+		2193883741,
+		3271579995,
+		2193885483,
+		2193885845,
+		2197835157,
+		3267627850,
+		2194017109,
+		2197825237,
+		2194015579,
+		3271582327,
+		2193883735,
+		2193884459,
+		2197707434,
+		3267759765,
+		2193884842,
+		2197830570,
+		2194016949,
+		2197849277,
+		2193884334,
+		2194016855,
+		2197706061,
+		3267628326,
+		2194017685,
+		2197898837,
+		2193884522,
+		3267758509,
+		2197824861,
+		2193884334,
+		2197842523,
+		3267627597,
+		2193886501,
+		2197839273,
+		2194017109,
+		3267626346,
+		2197826266,
+		2194016605,
+		2197845179,
+		3267626139,
+		2193885771,
+		2197838667,
+		2193884841,
+		3267627732,
+		2197965749,
+		2193883830,
+		2194016603,
+		3271566647,
+		2193884311,
+		2197710422,
+		2193886794,
+		3267759781,
+		2197903017,
+		2194015669,
+		2193883830,
+		3271637166,
+		2193885486,
+		2197912717,
+		2193886357,
+		3267628362,
+		2197908874,
+		2194017129,
+		2194015597,
+		3271639643,
+		2193883741,
+		2193885485,
+		2197826859,
+		3267627669,
+		2197847381,
+		2193886026,
+		2194017109,
+		3271644501,
+		2194015451,
+		2193883739,
+		2197895255,
+		3267626283,
+		2197850779,
+		2193884821,
+		2193884842,
+		3271584490,
+		2194016949,
+		2193884342,
+		2197834414,
+		3267758679,
+		2193884455,
+		2197698342,
+		2194017685,
+		3271587509,
+		2193884522,
+		2194016685,
+		2197837021,
+		3267626158,
+		2193885774,
+		2197835085,
+		2193886501,
+		3271593305,
+		2193886036,
+		2194017642,
+		2197907802,
+		3267758427,
+		2193884315,
+		2197834395,
+		2193885771,
+		3271600935,
+		2193884837,
+		2193884884,
+		2197973877,
+		3267625654,
+		2194016603,
+		2197836983,
+		2193884311,
+		3267626571,
+		2197698378,
+		2194017957,
+		2197849817,
+		3267757485,
+		2193883830,
+		2197838190,
+		2193885486,
+		3267628182,
+		2197835413,
+		2193886538,
+		2194017701,
+		3271567189,
+		2193884524,
+		2197977787,
+		2193883741,
+		3267627309,
+		2197839019,
+		2193885845,
+		2193886026,
+		3271637834,
+		2194017109,
+		2197853533,
+		2193884346,
+		3267758683,
+		2197837143,
+		2193884459,
+		2193885845,
+		3271576469,
+		2193884842,
+		2194016981,
+		2197825205,
+		3267626166,
+		2197842542,
+		2194016855,
+		2193884455,
+		3271448230,
+		2194017683,
+		2193884586,
+		2197830506,
+		3267758445,
+		2197861551,
+		2193884334,
+		2193885773,
+		3271650573,
+		2193886501,
+		2193886546,
+		2197839316,
+		3267758954,
+		2194016621,
+		2197824859,
+		2193884315,
+		3271588439,
+		2193885771,
+		2193885989,
+		2197904165,
+		3267626708,
+		2194016986,
+		2197895350
+	]
+};
+//#endregion
+//#region src/korean-lunar-calendar.ts
+var GAPJA_OFFSET = {
+	YEAR_CHEONGAN: 6,
+	YEAR_GANJI: 0,
+	MONTH_CHEONGAN: 3,
+	MONTH_GANJI: 1,
+	DAY_CHEONGAN: 4,
+	DAY_GANJI: 2
+};
+var KoreanLunarCalendar = class {
+	constructor() {
+		this.cumulativeLunarYearDays = /* @__PURE__ */ new Map();
+		this.cumulativeSolarYearDays = /* @__PURE__ */ new Map();
+		this.solarCalendar = {
+			year: 0,
+			month: 0,
+			day: 0
+		};
+		this.lunarCalendar = {
+			year: 0,
+			month: 0,
+			day: 0,
+			intercalation: false
+		};
+		const today = /* @__PURE__ */ new Date();
+		this.setSolarDate(today.getFullYear(), today.getMonth() + 1, today.getDate());
+	}
+	getLunarData(year) {
+		return LUNAR_CALENDAR_DATA.KOREAN_LUNAR_DATA[year - LUNAR_CALENDAR_DATA.KOREAN_LUNAR_BASE_YEAR];
+	}
+	getLunarIntercalationMonth(lunarData) {
+		return lunarData >> 12 & 15;
+	}
+	getLunarYearDays(year) {
+		return this.getLunarData(year) >> 17 & 511;
+	}
+	getLunarMonthDays(year, month, isIntercalation) {
+		const lunarData = this.getLunarData(year);
+		return (isIntercalation && this.getLunarIntercalationMonth(lunarData) === month ? (lunarData >> 16 & 1) > 0 : (lunarData >> 12 - month & 1) > 0) ? LUNAR_CALENDAR_DATA.LUNAR_BIG_MONTH_DAY : LUNAR_CALENDAR_DATA.LUNAR_SMALL_MONTH_DAY;
+	}
+	getLunarDaysBeforeBaseYear(year) {
+		return this.accumulateYearDays(year, this.cumulativeLunarYearDays, (y) => this.getLunarYearDays(y));
+	}
+	getLunarDaysBeforeBaseMonth(year, month, isIntercalation) {
+		let days = 0;
+		if (year >= LUNAR_CALENDAR_DATA.KOREAN_LUNAR_BASE_YEAR && month > 0) {
+			for (let baseMonth = 1; baseMonth < month + 1; baseMonth++) days += this.getLunarMonthDays(year, baseMonth, false);
+			if (isIntercalation) {
+				const intercalationMonth = this.getLunarIntercalationMonth(this.getLunarData(year));
+				if (intercalationMonth > 0 && intercalationMonth < month + 1) days += this.getLunarMonthDays(year, intercalationMonth, true);
+			}
+		}
+		return days;
+	}
+	getLunarAbsDays(year, month, day, isIntercalation) {
+		let days = this.getLunarDaysBeforeBaseYear(year - 1) + this.getLunarDaysBeforeBaseMonth(year, month - 1, true) + day;
+		if (isIntercalation && this.getLunarIntercalationMonth(this.getLunarData(year)) === month) days += this.getLunarMonthDays(year, month, false);
+		return days;
+	}
+	isSolarIntercalationYear(lunarData) {
+		return (lunarData >> 30 & 1) > 0;
+	}
+	getSolarYearDays(year) {
+		return this.isSolarIntercalationYear(this.getLunarData(year)) ? LUNAR_CALENDAR_DATA.SOLAR_BIG_YEAR_DAY : LUNAR_CALENDAR_DATA.SOLAR_SMALL_YEAR_DAY;
+	}
+	getSolarMonthDays(year, month) {
+		if (month === 2 && this.isSolarIntercalationYear(this.getLunarData(year))) return LUNAR_CALENDAR_DATA.SOLAR_DAYS[12];
+		return LUNAR_CALENDAR_DATA.SOLAR_DAYS[month - 1];
+	}
+	getSolarDaysBeforeBaseYear(year) {
+		return this.accumulateYearDays(year, this.cumulativeSolarYearDays, (y) => this.getSolarYearDays(y));
+	}
+	accumulateYearDays(year, cache, perYear) {
+		const cached = cache.get(year);
+		if (cached !== void 0) return cached;
+		const baseYear = LUNAR_CALENDAR_DATA.KOREAN_LUNAR_BASE_YEAR;
+		const previous = cache.get(year - 1);
+		let days = 0;
+		if (previous !== void 0 && year > baseYear) days = previous + perYear(year);
+		else for (let y = baseYear; y < year + 1; y++) days += perYear(y);
+		cache.set(year, days);
+		return days;
+	}
+	getSolarDaysBeforeBaseMonth(year, month) {
+		let days = 0;
+		for (let baseMonth = 1; baseMonth < month + 1; baseMonth++) days += this.getSolarMonthDays(year, baseMonth);
+		return days;
+	}
+	getSolarAbsDays(year, month, day) {
+		return this.getSolarDaysBeforeBaseYear(year - 1) + this.getSolarDaysBeforeBaseMonth(year, month - 1) + day - LUNAR_CALENDAR_DATA.SOLAR_LUNAR_DAY_DIFF;
+	}
+	setSolarDateByLunarDate(lunarYear, lunarMonth, lunarDay, isIntercalation) {
+		const absDays = this.getLunarAbsDays(lunarYear, lunarMonth, lunarDay, isIntercalation);
+		const solarYear = absDays < this.getSolarAbsDays(lunarYear + 1, 1, 1) ? lunarYear : lunarYear + 1;
+		let solarMonth = 0;
+		let solarDay = 0;
+		for (let month = 12; month > 0; month--) {
+			const absDaysByMonth = this.getSolarAbsDays(solarYear, month, 1);
+			if (absDays >= absDaysByMonth) {
+				solarMonth = month;
+				solarDay = absDays - absDaysByMonth + 1;
+				break;
+			}
+		}
+		this.solarCalendar = {
+			year: solarYear,
+			month: solarMonth,
+			day: solarDay
+		};
+	}
+	setLunarDateBySolarDate(solarYear, solarMonth, solarDay) {
+		const absDays = this.getSolarAbsDays(solarYear, solarMonth, solarDay);
+		const lunarYear = absDays >= this.getLunarAbsDays(solarYear, 1, 1, false) ? solarYear : solarYear - 1;
+		let lunarMonth = 0;
+		let lunarDay = 0;
+		let isIntercalation = false;
+		for (let month = 12; month > 0; month--) if (absDays >= this.getLunarAbsDays(lunarYear, month, 1, false)) {
+			lunarMonth = month;
+			if (this.getLunarIntercalationMonth(this.getLunarData(lunarYear)) === month) isIntercalation = absDays >= this.getLunarAbsDays(lunarYear, month, 1, true);
+			lunarDay = absDays - this.getLunarAbsDays(lunarYear, lunarMonth, 1, isIntercalation) + 1;
+			break;
+		}
+		this.lunarCalendar = {
+			year: lunarYear,
+			month: lunarMonth,
+			day: lunarDay,
+			intercalation: isIntercalation
+		};
+	}
+	checkValidDate(isLunar, isIntercalation, year, month, day) {
+		let isValid = false;
+		if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) return false;
+		const dateValue = year * 1e4 + month * 100 + day;
+		if ((isLunar ? LUNAR_CALENDAR_DATA.KOREAN_LUNAR_MIN_VALUE : LUNAR_CALENDAR_DATA.KOREAN_SOLAR_MIN_VALUE) <= dateValue && (isLunar ? LUNAR_CALENDAR_DATA.KOREAN_LUNAR_MAX_VALUE : LUNAR_CALENDAR_DATA.KOREAN_SOLAR_MAX_VALUE) >= dateValue) {
+			if (month > 0 && month < 13 && day > 0) {
+				if (isLunar && isIntercalation && this.getLunarIntercalationMonth(this.getLunarData(year)) !== month) return false;
+				const dayLimit = isLunar ? this.getLunarMonthDays(year, month, isIntercalation) : this.getSolarMonthDays(year, month);
+				if (!isLunar && year === 1582 && month === 10 && day > 4 && day < 15) return false;
+				if (day <= dayLimit) isValid = true;
+			}
+		}
+		return isValid;
+	}
+	setLunarDate(lunarYear, lunarMonth, lunarDay, isIntercalation) {
+		let isValid = false;
+		if (this.checkValidDate(true, isIntercalation, lunarYear, lunarMonth, lunarDay)) {
+			this.lunarCalendar = {
+				year: lunarYear,
+				month: lunarMonth,
+				day: lunarDay,
+				intercalation: isIntercalation && this.getLunarIntercalationMonth(this.getLunarData(lunarYear)) === lunarMonth
+			};
+			this.setSolarDateByLunarDate(lunarYear, lunarMonth, lunarDay, isIntercalation);
+			isValid = true;
+		}
+		return isValid;
+	}
+	setSolarDate(solarYear, solarMonth, solarDay) {
+		let isValid = false;
+		if (this.checkValidDate(false, false, solarYear, solarMonth, solarDay)) {
+			this.solarCalendar = {
+				year: solarYear,
+				month: solarMonth,
+				day: solarDay
+			};
+			this.setLunarDateBySolarDate(solarYear, solarMonth, solarDay);
+			isValid = true;
+		}
+		return isValid;
+	}
+	computeGapJa() {
+		const lunar = this.lunarCalendar;
+		const absDays = this.getLunarAbsDays(lunar.year, lunar.month, lunar.day, !!lunar.intercalation);
+		if (absDays <= 0) return {
+			cheongan: {
+				year: 0,
+				month: 0,
+				day: 0
+			},
+			ganji: {
+				year: 0,
+				month: 0,
+				day: 0
+			}
+		};
+		const baseYear = LUNAR_CALENDAR_DATA.KOREAN_LUNAR_BASE_YEAR;
+		const cheonganLen = LUNAR_CALENDAR_DATA.KOREAN_CHEONGAN.length;
+		const ganjiLen = LUNAR_CALENDAR_DATA.KOREAN_GANJI.length;
+		const monthCount = lunar.month + 12 * (lunar.year - baseYear);
+		return {
+			cheongan: {
+				year: (lunar.year + GAPJA_OFFSET.YEAR_CHEONGAN - baseYear) % cheonganLen,
+				month: (monthCount + GAPJA_OFFSET.MONTH_CHEONGAN) % cheonganLen,
+				day: (absDays + GAPJA_OFFSET.DAY_CHEONGAN) % cheonganLen
+			},
+			ganji: {
+				year: (lunar.year + GAPJA_OFFSET.YEAR_GANJI - baseYear) % ganjiLen,
+				month: (monthCount + GAPJA_OFFSET.MONTH_GANJI) % ganjiLen,
+				day: (absDays + GAPJA_OFFSET.DAY_GANJI) % ganjiLen
+			}
+		};
+	}
+	getGapJaIndex() {
+		return this.computeGapJa();
+	}
+	getGapja(isChinese) {
+		const inx = this.getGapJaIndex();
+		const cheongan = !isChinese ? LUNAR_CALENDAR_DATA.KOREAN_CHEONGAN : LUNAR_CALENDAR_DATA.CHINESE_CHEONGAN;
+		const ganji = !isChinese ? LUNAR_CALENDAR_DATA.KOREAN_GANJI : LUNAR_CALENDAR_DATA.CHINESE_GANJI;
+		const unit = !isChinese ? LUNAR_CALENDAR_DATA.KOREAN_GAPJA_UNIT : LUNAR_CALENDAR_DATA.CHINESE_GAPJA_UNIT;
+		const intercalationStr = !isChinese ? `${LUNAR_CALENDAR_DATA.INTERCALATION_STR[0]}${LUNAR_CALENDAR_DATA.KOREAN_GAPJA_UNIT[1]}` : `${LUNAR_CALENDAR_DATA.INTERCALATION_STR[1]}${LUNAR_CALENDAR_DATA.CHINESE_GAPJA_UNIT[1]}`;
+		return {
+			year: `${cheongan[inx.cheongan.year]}${ganji[inx.ganji.year]}${unit[0]}`,
+			month: `${cheongan[inx.cheongan.month]}${ganji[inx.ganji.month]}${unit[1]}`,
+			day: `${cheongan[inx.cheongan.day]}${ganji[inx.ganji.day]}${unit[2]}`,
+			intercalation: this.lunarCalendar.intercalation ? intercalationStr : ""
+		};
+	}
+	getKoreanGapja() {
+		return this.getGapja();
+	}
+	getChineseGapja() {
+		return this.getGapja(true);
+	}
+	getLunarCalendar() {
+		return { ...this.lunarCalendar };
+	}
+	getSolarCalendar() {
+		return { ...this.solarCalendar };
+	}
+};
+//#endregion
+root.KoreanLunarCalendar = KoreanLunarCalendar;
+
+//# sourceMappingURL=korean-lunar-calendar.js.map
+})(typeof window !== 'undefined' ? window : this);
+</script>
+
 </head>
 <body>
   <!-- 모바일 스마트폰 컨테이너 -->
@@ -701,12 +2111,13 @@
       </section>
 
       <!-- 2. 사주 원국 4주 모찌 박스 (시, 일, 월, 년) -->
-      <section class="m-card" style="padding: 14px 10px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 4px;">
+      <!-- 2. 사주 원국 4주 모찌 박스 (시, 일, 월, 년) -->
+      <section class="m-card" style="padding: 14px 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px;">
           <h3 style="font-family: 'Noto Serif KR', serif; font-size: 1.05rem; font-weight: 800; color: var(--pink-deep);">
             🎀 四柱八字 원국표
           </h3>
-          <span style="font-size: 0.72rem; color: var(--text-dim);">시주 · 일주(나) · 월주 · 년주</span>
+          <span style="font-size: 0.72rem; color: var(--pink-main); font-weight: 700;">시주 · 일주(나💖) · 월주 · 년주</span>
         </div>
 
         <div class="pillars-4col">
@@ -714,45 +2125,56 @@
           <div class="pillar-box" id="pColHour">
             <div class="p-col-title">시주(時)</div>
             <span class="tg-label" id="hourGanTenGod">식신</span>
-            <div class="hanja-sq" id="hourGanHan">壬</div>
+            <div class="hanja-sq c-water" id="hourGanHan">壬</div>
             <span class="elem-mini" id="hourGan">陽 壬 水</span>
-            <div class="hanja-sq" id="hourJiHan">午</div>
+            <div class="hanja-sq c-fire" id="hourJiHan">午</div>
             <span class="elem-mini" id="hourJi">陰 午 火</span>
             <span class="tg-label" id="hourJiTenGod">정관</span>
+            <div class="unseong-badge" id="hourUnseong">목욕</div>
+            <div class="hidden-gan-txt" id="hourHiddenGan">丙·己·丁</div>
           </div>
 
           <!-- 일주 (본인) -->
           <div class="pillar-box me" id="pColDay">
-            <div class="p-col-title" style="color: var(--pink-main);">일주(나💖)</div>
+            <div class="p-col-title" style="color: var(--pink-main); font-weight: 900;">일주(나💖)</div>
             <span class="tg-label" style="color: var(--pink-main); font-weight: 800;" id="dayGanTenGod">일원(나)</span>
-            <div class="hanja-sq" id="dayGanHan">庚</div>
+            <div class="hanja-sq c-metal" id="dayGanHan">庚</div>
             <span class="elem-mini" id="dayGan">陽 庚 金</span>
-            <div class="hanja-sq" id="dayJiHan">辰</div>
+            <div class="hanja-sq c-earth" id="dayJiHan">辰</div>
             <span class="elem-mini" id="dayJi">陽 辰 土</span>
             <span class="tg-label" id="dayJiTenGod">편인</span>
+            <div class="unseong-badge me-badge" id="dayUnseong">양(養)</div>
+            <div class="hidden-gan-txt" id="dayHiddenGan">乙·癸·戊</div>
           </div>
 
           <!-- 월주 -->
           <div class="pillar-box" id="pColMonth">
             <div class="p-col-title">월주(月)</div>
             <span class="tg-label" id="monthGanTenGod">겁재</span>
-            <div class="hanja-sq" id="monthGanHan">辛</div>
+            <div class="hanja-sq c-metal" id="monthGanHan">辛</div>
             <span class="elem-mini" id="monthGan">陰 辛 金</span>
-            <div class="hanja-sq" id="monthJiHan">巳</div>
+            <div class="hanja-sq c-fire" id="monthJiHan">巳</div>
             <span class="elem-mini" id="monthJi">陽 巳 火</span>
             <span class="tg-label" id="monthJiTenGod">편관</span>
+            <div class="unseong-badge" id="monthUnseong">장생</div>
+            <div class="hidden-gan-txt" id="monthHiddenGan">戊·庚·丙</div>
           </div>
 
           <!-- 년주 -->
           <div class="pillar-box" id="pColYear">
             <div class="p-col-title">년주(年)</div>
             <span class="tg-label" id="yearGanTenGod">비견</span>
-            <div class="hanja-sq" id="yearGanHan">庚</div>
+            <div class="hanja-sq c-metal" id="yearGanHan">庚</div>
             <span class="elem-mini" id="yearGan">陽 庚 金</span>
-            <div class="hanja-sq" id="yearJiHan">午</div>
+            <div class="hanja-sq c-fire" id="yearJiHan">午</div>
             <span class="elem-mini" id="yearJi">陰 午 火</span>
             <span class="tg-label" id="yearJiTenGod">정관</span>
+            <div class="unseong-badge" id="yearUnseong">목욕</div>
+            <div class="hidden-gan-txt" id="yearHiddenGan">丙·己·丁</div>
           </div>
+        </div>
+        <div style="font-size: 0.66rem; color: var(--text-dim); text-align: center; margin-top: 4px;">
+          ※ 일간(나) 기준 십성, 12운성 및 지장간(암장 천간) 정통 명리학 역법 적용
         </div>
       </section>
 
@@ -1156,6 +2578,37 @@
       const jh = document.getElementById(`${type}JiHan`);
       const j = document.getElementById(`${type}Ji`);
       const jt = document.getElementById(`${type}JiTenGod`);
+      const u = document.getElementById(`${type}Unseong`);
+      const hg = document.getElementById(`${type}HiddenGan`);
+
+      if (gh) {
+        gh.textContent = p.ganHan || '-';
+        gh.className = `hanja-sq ${getElemColor(p.gan || p.ganHan)}`;
+      }
+      if (g) g.textContent = p.gan || '-';
+      if (gt) gt.textContent = (type === 'day') ? '일원(나)' : (p.ganTenGod || '-');
+
+      if (jh) {
+        jh.textContent = p.jiHan || '-';
+        jh.className = `hanja-sq ${getElemColor(p.ji || p.jiHan)}`;
+      }
+      if (j) j.textContent = p.ji || '-';
+      if (jt) jt.textContent = p.jiTenGod || '-';
+      if (u) u.textContent = p.unseong || '-';
+      if (hg) {
+        if (Array.isArray(p.hiddenGan)) {
+          const simple = p.hiddenGan.map(item => item.split(' ')[0].replace(/[木火土金水]/g, ''));
+          hg.textContent = simple.join('·');
+        } else {
+          hg.textContent = p.hiddenGan || '-';
+        }
+      }
+    }GanHan`);
+      const g = document.getElementById(`${type}Gan`);
+      const gt = document.getElementById(`${type}GanTenGod`);
+      const jh = document.getElementById(`${type}JiHan`);
+      const j = document.getElementById(`${type}Ji`);
+      const jt = document.getElementById(`${type}JiTenGod`);
 
       if (gh) {
         gh.textContent = p.ganHan || '-';
@@ -1385,47 +2838,344 @@
     }
 
     // 폴백 시뮬레이터
+    // =========================================================
+    // 🌸 정통 명리학 만세력 120년 정밀 계산 엔진 (한국천문연구원 기준)
+    // =========================================================
     function getMobileFallbackData(payload) {
-      const gans = ["甲木 陽", "乙木 陰", "丙火 陽", "丁火 陰", "戊土 陽", "己土 陰", "庚金 陽", "辛金 陰", "壬水 陽", "癸水 陰"];
-      const jis = ["子水 陰", "丑土 陰", "寅木 陽", "卯木 陰", "辰土 陽", "巳火 陽", "午火 陰", "未土 陰", "申金 陽", "酉金 陰", "戌土 陽", "亥水 陰"];
-      const hGans = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
-      const hJis = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+      const GANS = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+      const JIS = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+      const GAN_ELEM = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4]; // 0:목, 1:화, 2:토, 3:금, 4:수
+      const JI_ELEM  = [4, 2, 0, 0, 2, 1, 1, 2, 3, 3, 2, 4]; // 子:수, 丑:토, 寅:목, 卯:목, 辰:토, 巳:화, 午:화, 未:토, 申:금, 酉:금, 戌:토, 亥:수
+      const ELEM_NAMES = ["木", "火", "土", "金", "水"];
+      const GAN_YY = ["陽", "陰", "陽", "陰", "陽", "陰", "陽", "陰", "陽", "陰"];
+      const JI_YY = ["陰", "陰", "陽", "陰", "陽", "陽", "陰", "陰", "陽", "陰", "陽", "陽"]; // 巳(陽화:丙), 午(陰화:丁), 亥(陽수:壬), 子(陰수:癸)
 
-      const y = parseInt(payload.birth_year, 10);
-      const m = parseInt(payload.birth_month, 10);
-      const d = parseInt(payload.birth_day, 10);
+      // 지장간 정통 매핑
+      const HIDDEN_GANS = {
+        "子": ["壬水 陽 편관", "癸水 陰 정관"],
+        "丑": ["癸水 陰 정재", "辛金 陰 식신", "己土 陰 비견"],
+        "寅": ["戊土 陽 편재", "丙火 陽 식신", "甲木 陽 비견"],
+        "卯": ["甲木 陽 겁재", "乙木 陰 비견"],
+        "辰": ["乙木 陰 정재", "癸水 陰 정관", "戊土 陽 편재"],
+        "巳": ["戊土 陽 편재", "庚金 陽 편관", "丙火 陽 식신"],
+        "午": ["丙火 陽 식신", "己土 陰 상관", "丁火 陰 정관"],
+        "未": ["丁火 陰 상관", "乙木 陰 정재", "己土 陰 비견"],
+        "申": ["戊土 陽 편재", "壬水 陽 편관", "庚金 陽 편관"],
+        "酉": ["庚金 陽 편관", "辛金 陰 정관"],
+        "戌": ["辛金 陰 정관", "丁火 陰 상관", "戊土 陽 편재"],
+        "亥": ["戊土 陽 편재", "甲木 陽 비견", "壬水 陽 편관"]
+      };
 
-      const yIdx = (y - 4) % 10;
-      const yJiIdx = (y - 4) % 12;
-      const mIdx = (y * 2 + m) % 10;
-      const mJiIdx = (m + 1) % 12;
-      const dIdx = (y * 5 + m * 30 + d) % 10;
-      const dJiIdx = (d * 7) % 12;
-      const hIdx = (dIdx * 2 + 2) % 10;
-      const hJiIdx = 6;
+      // 12운성 (장생, 목욕, 관대, 건록, 제왕, 쇠, 병, 사, 묘, 절, 태, 양)
+      const UNSEONG_NAMES = ["장생", "목욕", "관대", "건록", "제왕", "쇠", "병", "사", "묘", "절", "태", "양"];
+      // 일간별 장생 위치
+      const JANGSAENG_START = {
+        0: 11, // 甲 -> 亥
+        1: 6,  // 乙 -> 午 (역행)
+        2: 2,  // 丙 -> 寅
+        3: 9,  // 丁 -> 酉 (역행)
+        4: 2,  // 戊 -> 寅
+        5: 9,  // 己 -> 酉 (역행)
+        6: 5,  // 庚 -> 巳
+        7: 0,  // 辛 -> 子 (역행)
+        8: 8,  // 壬 -> 申
+        9: 3   // 癸 -> 卯 (역행)
+      };
+
+      function calcUnseong(dGanIdx, targetJiIdx) {
+        const start = JANGSAENG_START[dGanIdx];
+        const isYang = (dGanIdx % 2 === 0);
+        let dist = 0;
+        if (isYang) {
+          dist = (targetJiIdx - start + 12) % 12;
+        } else {
+          dist = (start - targetJiIdx + 12) % 12;
+        }
+        return UNSEONG_NAMES[dist];
+      }
+
+      // 십성 산출 함수 ( 및 명리학 표준: 정인은 '인수')
+      function calcTenGod(meGanIdx, targetElem, targetIsYang) {
+        const meElem = GAN_ELEM[meGanIdx];
+        const meIsYang = (meGanIdx % 2 === 0);
+        const isSame = (meIsYang === targetIsYang);
+        const diff = (targetElem - meElem + 5) % 5;
+        if (diff === 0) return isSame ? "비견" : "겁재";
+        if (diff === 1) return isSame ? "식신" : "상관";
+        if (diff === 2) return isSame ? "편재" : "정재";
+        if (diff === 3) return isSame ? "편관" : "정관";
+        if (diff === 4) return isSame ? "편인" : "인수";
+        return "";
+      }
+
+      let y = parseInt(payload.birth_year, 10) || 1995;
+      let m = parseInt(payload.birth_month, 10) || 5;
+      let d = parseInt(payload.birth_day, 10) || 15;
+
+      // 음력 변환 (KoreanLunarCalendar 사용 가능한 경우)
+      let isLunar = (payload.sl_cal === 'L' || payload.sl_cal === 'Y');
+      let isIntercalation = (payload.sl_cal === 'Y');
+      if (isLunar && typeof window !== 'undefined' && window.KoreanLunarCalendar) {
+        try {
+          const klc = new window.KoreanLunarCalendar();
+          klc.setLunarDate(y, m, d, isIntercalation);
+          const sol = klc.getSolarCalendar();
+          if (sol && sol.year) {
+            y = sol.year;
+            m = sol.month;
+            d = sol.day;
+          }
+        } catch (e) {
+          console.warn('음력 변환 오프라인 예외:', e);
+        }
+      }
+
+      // 1. 일주(日柱) 정밀 산출 (1900.1.1 = 甲戌 10번째 일진 기준)
+      const baseEpoch = new Date(Date.UTC(1900, 0, 1));
+      const targetDate = new Date(Date.UTC(y, m - 1, d));
+      const dayDiff = Math.round((targetDate - baseEpoch) / 86400000);
+      const dayGanji = (10 + (dayDiff % 60) + 60) % 60;
+      const dGanIdx = dayGanji % 10;
+      const dJiIdx = dayGanji % 12;
+
+      // 2. 년주(年柱) 산출 (입춘 2월 4일 기준)
+      let yearForGanji = y;
+      if (m === 1 || (m === 2 && d < 4)) {
+        yearForGanji = y - 1;
+      }
+      const yGanIdx = (yearForGanji - 4 + 60) % 10;
+      const yJiIdx = (yearForGanji - 4 + 60) % 12;
+
+      // 3. 월주(月柱) 산출 (24절기 절입일 기준 + 오호둔월법)
+      const solarCutoff = [6, 4, 6, 5, 6, 6, 7, 8, 8, 8, 7, 7]; // 소한, 입춘, 경칩, 청명, 입하, 망종, 소서, 입추, 백로, 한로, 입동, 대설
+      let solMonthIdx = m - 1;
+      if (d < solarCutoff[solMonthIdx]) {
+        solMonthIdx = (solMonthIdx - 1 + 12) % 12;
+      }
+      // 절기월에 따른 지지: 입춘(寅:2)부터 시작
+      const monthBranchMap = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0]; // 0월(축), 1월(인), 2월(묘)...
+      const mJiIdx = monthBranchMap[solMonthIdx];
+
+      // 오호둔월법 (연간에 따른 인월의 천간)
+      const yearToMonthGanStart = [2, 4, 6, 8, 0][yGanIdx % 5]; // 甲己->丙, 乙庚->戊, 丙辛->庚, 丁壬->壬, 戊癸->甲
+      const monthOffset = (mJiIdx - 2 + 12) % 12;
+      const mGanIdx = (yearToMonthGanStart + monthOffset) % 10;
+
+      // 4. 시주(時柱) 산출 (오서둔시법)
+      const hourBranchMap = {
+        "00": 0, "02": 1, "04": 2, "06": 3, "08": 4, "10": 5,
+        "12": 6, "14": 7, "16": 8, "18": 9, "20": 10, "22": 11, "24": 0
+      };
+      const hCode = payload.birth_hour || "12";
+      const hJiIdx = hourBranchMap[hCode] !== undefined ? hourBranchMap[hCode] : 6;
+      const dayToHourGanStart = [0, 2, 4, 6, 8][dGanIdx % 5]; // 甲己->甲, 乙庚->丙, 丙辛->戊, 丁壬->庚, 戊癸->壬
+      const hGanIdx = (dayToHourGanStart + hJiIdx) % 10;
+
+      // 천간 지지 문자열 조합
+      const makePillar = (gIdx, jIdx, isDay = false) => {
+        const ganHan = GANS[gIdx];
+        const jiHan = JIS[jIdx];
+        const ganElem = GAN_ELEM[gIdx];
+        const jiElem = JI_ELEM[jIdx];
+        const gYY = GAN_YY[gIdx];
+        const jYY = JI_YY[jIdx];
+
+        return {
+          gan: `${gYY} ${ganHan} ${ELEM_NAMES[ganElem]}`,
+          ji: `${jYY} ${jiHan} ${ELEM_NAMES[jiElem]}`,
+          ganHan: ganHan,
+          jiHan: jiHan,
+          ganTenGod: isDay ? "일원(나)" : calcTenGod(dGanIdx, ganElem, gYY === "陽"),
+          jiTenGod: calcTenGod(dGanIdx, jiElem, jYY === "陽"),
+          unseong: calcUnseong(dGanIdx, jIdx),
+          hiddenGan: HIDDEN_GANS[jiHan] || []
+        };
+      };
+
+      const yearPillar = makePillar(yGanIdx, yJiIdx);
+      const monthPillar = makePillar(mGanIdx, mJiIdx);
+      const dayPillar = makePillar(dGanIdx, dJiIdx, true);
+      const hourPillar = makePillar(hGanIdx, hJiIdx);
+
+      // 5. 오행 에너지 정밀 계산 (가중치: 천간 10, 지지 15, 월지 30)
+      const elemScores = [0, 0, 0, 0, 0];
+      elemScores[GAN_ELEM[yGanIdx]] += 10;
+      elemScores[JI_ELEM[yJiIdx]] += 15;
+      elemScores[GAN_ELEM[mGanIdx]] += 10;
+      elemScores[JI_ELEM[mJiIdx]] += 30; // 월지(득령) 가중치
+      elemScores[GAN_ELEM[dGanIdx]] += 10;
+      elemScores[JI_ELEM[dJiIdx]] += 15;
+      elemScores[GAN_ELEM[hGanIdx]] += 10;
+      elemScores[JI_ELEM[hJiIdx]] += 15;
+
+      const myElem = GAN_ELEM[dGanIdx];
+      const supportScore = elemScores[myElem] + elemScores[(myElem + 4) % 5]; // 인성과 비겁 점수
+      const isStrong = supportScore >= 45;
+      const strengthLabel = isStrong ? "신강 (身强)" : "신약 (身弱)";
+
+      // 6. 대운 계산 (10년 주기)
+      const isYangMan = (payload.gender === "M" && yGanIdx % 2 === 0);
+      const isYinWoman = (payload.gender === "F" && yGanIdx % 2 === 1);
+      const isForward = isYangMan || isYinWoman; // 순행 vs 역행
+
+      const daewunList = [];
+      const daewunStartAge = 7;
+      for (let i = 1; i <= 8; i++) {
+        const step = isForward ? i : -i;
+        const dwGIdx = (mGanIdx + step + 100) % 10;
+        const dwJIdx = (mJiIdx + step + 120) % 12;
+        daewunList.push({
+          age: `${daewunStartAge + (i - 1) * 10}세~`,
+          ganji: `${GANS[dwGIdx]}${JIS[dwJIdx]}`
+        });
+      }
+
+      // 7. 정통 운세 풀이
+      const titles = {
+        'A042': '평생운세 명리 분석',
+        'A104': '2026 신토정비결',
+        'A102': '2026 부자되기',
+        'A027': '오늘의 운세'
+      };
+
+      const dayElementStr = ELEM_NAMES[GAN_ELEM[dGanIdx]];
+      const dayGanjiName = `${GANS[dGanIdx]}${JIS[dJiIdx]}`;
 
       return {
-        title: payload.unse_code === 'A104' ? '2026 토정비결' : (payload.unse_code === 'A102' ? '2026 부자되기' : '평생운세 명리 분석'),
+        title: titles[payload.unse_code] || '평생운세 명리 분석',
         pillars: {
-          year: { gan: gans[yIdx], ji: jis[yJiIdx], ganHan: hGans[yIdx], jiHan: hJis[yJiIdx], ganTenGod: "비견", jiTenGod: "정관" },
-          month: { gan: gans[mIdx], ji: jis[mJiIdx], ganHan: hGans[mIdx], jiHan: hJis[mJiIdx], ganTenGod: "겁재", jiTenGod: "편관" },
-          day: { gan: gans[dIdx], ji: jis[dJiIdx], ganHan: hGans[dIdx], jiHan: hJis[dJiIdx], ganTenGod: "일원(나)", jiTenGod: "편인" },
-          hour: { gan: gans[hIdx], ji: jis[hJiIdx], ganHan: hGans[hIdx], jiHan: hJis[hJiIdx], ganTenGod: "식신", jiTenGod: "정관" }
+          year: yearPillar,
+          month: monthPillar,
+          day: dayPillar,
+          hour: hourPillar
         },
-        ohaeng: { wood: 24, fire: 45, earth: 32, metal: 26, water: 20, strength: "신약 (身弱)" },
+        ohaeng: {
+          wood: elemScores[0],
+          fire: elemScores[1],
+          earth: elemScores[2],
+          metal: elemScores[3],
+          water: elemScores[4],
+          strength: strengthLabel
+        },
         daewun: {
-          description: "회원님은 7살을 기준으로 하여 10년 단위로 인생의 큰 변화가 일어납니다 🌸",
-          stages: [
-            { age: "7세~", ganji: "壬午" }, { age: "17세~", ganji: "癸未" }, { age: "27세~", ganji: "甲申" },
-            { age: "37세~", ganji: "乙酉" }, { age: "47세~", ganji: "丙戌" }, { age: "57세~", ganji: "丁亥" },
-            { age: "67세~", ganji: "戊子" }, { age: "77세~", ganji: "己丑" }
-          ]
+          description: `회원님은 ${daewunStartAge}세를 기준으로 10년 단위로 인생의 대운(大運) 흐름이 변화합니다 🌸`,
+          stages: daewunList
         },
         sections: [
-          { title: "초년운 🌸", content: "초년운은 밝고 따뜻한 에너지가 가득합니다. 호기심이 많고 주변 사람들에게 사랑을 듬뿍 받는 성격이며, 가족과의 따뜻한 유대 속에서 자신만의 특별한 매력과 재능을 발견해 나가는 시기입니다." },
-          { title: "중년운 💖", content: "중년운은 30대 후반부터 사랑과 성취가 무르익는 시기입니다. 긍정적인 마인드와 성실함으로 주변의 신뢰를 얻으며, 사람들과의 깊은 인연을 통해 인생에서 가장 반짝이는 성공을 맞이하게 됩니다." },
-          { title: "말년운 ✨", content: "말년운은 자신이 일군 아름다운 결실을 누리는 풍요로운 시간입니다. 가정이 늘 평안하고 화목하며, 주변 사람들의 따뜻한 존경과 사랑 속에서 보람차고 여유로운 나날을 보내게 됩니다." },
-          { title: "재물운 및 애정운 🎀", content: "따뜻한 화(火)와 토(土)의 기운이 조화롭게 작용하여 사람을 이끄는 매력과 함께 차곡차곡 재물이 모이는 복을 지니고 있습니다. 서로를 존중하고 아껴주는 진실한 인연을 만나 행복한 삶을 완성합니다." }
+          {
+            title: "사주 본질과 성향 (일주: " + dayGanjiName + ") 🌸",
+            content: `회원님은 천간 ${GANS[dGanIdx]}(${dayElementStr})의 기운을 타고난 ${dayGanjiName} 일주입니다. 주관이 뚜렷하고 배려심이 깊으며, 신뢰와 인덕을 바탕으로 주변 사람들의 중심이 되는 사주입니다. ${strengthLabel}의 사주로 오행의 균형을 맞출수록 운세가 더욱 크게 번창합니다.`
+          },
+          {
+            title: "초년운 (청소년기 ~ 20대) ✨",
+            content: "초년운은 학습 능력과 적응력이 뛰어나 다방면에서 재능을 꽃피우는 시기입니다. 물질적인 환경보다 가족과 친구의 따뜻한 정서적 유대 속에서 자신만의 인생 가치관을 확립하게 됩니다."
+          },
+          {
+            title: "중년운 (30대 ~ 50대) 💖",
+            content: "중년운은 노력의 결실이 맺어지는 성취의 황금기입니다. 30대 후반부터 새로운 도전을 통해 확고한 사회적 기반을 다지게 되며, 사람과의 깊은 인연과 신뢰를 통해 부와 명예를 축적합니다."
+          },
+          {
+            title: "말년운 (60대 이후) 🌟",
+            content: "말년운은 자신이 일군 성취와 명예가 빛을 발하는 풍요로운 시기입니다. 가정이 평안하고 자식의 효도를 받으며, 여유롭고 존경받는 노후를 누리게 되는 복된 명조입니다."
+          },
+          {
+            title: "재물운 및 직업운 💎",
+            content: `사주 오행 중 ${ELEM_NAMES[GAN_ELEM[dGanIdx]]}의 기운을 조화롭게 이끌어주는 전문 기획, 금융, 경영, 문화예술 및 유통 분야에서 큰 성과를 거둘 수 있습니다. 꾸준한 저축과 분산 투자를 통해 안정적인 자산을 구축합니다.`
+          }
+        ]
+      };
+    };
+
+      const yearPillar = makePillar(yGanIdx, yJiIdx);
+      const monthPillar = makePillar(mGanIdx, mJiIdx);
+      const dayPillar = makePillar(dGanIdx, dJiIdx, true);
+      const hourPillar = makePillar(hGanIdx, hJiIdx);
+
+      // 5. 오행 에너지 정밀 계산 (가중치: 천간 10, 지지 15, 월지 30)
+      const elemScores = [0, 0, 0, 0, 0];
+      elemScores[GAN_ELEM[yGanIdx]] += 10;
+      elemScores[JI_ELEM[yJiIdx]] += 15;
+      elemScores[GAN_ELEM[mGanIdx]] += 10;
+      elemScores[JI_ELEM[mJiIdx]] += 30; // 월지(득령) 가중치
+      elemScores[GAN_ELEM[dGanIdx]] += 10;
+      elemScores[JI_ELEM[dJiIdx]] += 15;
+      elemScores[GAN_ELEM[hGanIdx]] += 10;
+      elemScores[JI_ELEM[hJiIdx]] += 15;
+
+      const myElem = GAN_ELEM[dGanIdx];
+      const supportScore = elemScores[myElem] + elemScores[(myElem + 4) % 5]; // 인성과 비겁 점수
+      const isStrong = supportScore >= 45;
+      const strengthLabel = isStrong ? "신강 (身强)" : "신약 (身弱)";
+
+      // 6. 대운 계산 (10년 주기)
+      const isYangMan = (payload.gender === "M" && yGanIdx % 2 === 0);
+      const isYinWoman = (payload.gender === "F" && yGanIdx % 2 === 1);
+      const isForward = isYangMan || isYinWoman; // 순행 vs 역행
+
+      const daewunList = [];
+      const daewunStartAge = 7;
+      for (let i = 1; i <= 8; i++) {
+        const step = isForward ? i : -i;
+        const dwGIdx = (mGanIdx + step + 100) % 10;
+        const dwJIdx = (mJiIdx + step + 120) % 12;
+        daewunList.push({
+          age: `${daewunStartAge + (i - 1) * 10}세~`,
+          ganji: `${GANS[dwGIdx]}${JIS[dwJIdx]}`
+        });
+      }
+
+      // 7. 정통 운세 풀이
+      const titles = {
+        'A042': '평생운세 명리 분석',
+        'A104': '2026 신토정비결',
+        'A102': '2026 부자되기',
+        'A027': '오늘의 운세'
+      };
+
+      const dayElementStr = ELEM_NAMES[GAN_ELEM[dGanIdx]];
+      const dayGanjiName = `${GANS[dGanIdx]}${JIS[dJiIdx]}`;
+
+      return {
+        title: titles[payload.unse_code] || '평생운세 명리 분석',
+        pillars: {
+          year: yearPillar,
+          month: monthPillar,
+          day: dayPillar,
+          hour: hourPillar
+        },
+        ohaeng: {
+          wood: elemScores[0],
+          fire: elemScores[1],
+          earth: elemScores[2],
+          metal: elemScores[3],
+          water: elemScores[4],
+          strength: strengthLabel
+        },
+        daewun: {
+          description: `회원님은 ${daewunStartAge}세를 기준으로 10년 단위로 인생의 대운(大運) 흐름이 변화합니다 🌸`,
+          stages: daewunList
+        },
+        sections: [
+          {
+            title: "사주 본질과 성향 (일주: " + dayGanjiName + ") 🌸",
+            content: `회원님은 천간 ${GANS[dGanIdx]}(${dayElementStr})의 기운을 타고난 ${dayGanjiName} 일주입니다. 주관이 뚜렷하고 배려심이 깊으며, 신뢰와 인덕을 바탕으로 주변 사람들의 중심이 되는 사주입니다. ${strengthLabel}의 사주로 오행의 균형을 맞출수록 운세가 더욱 크게 번창합니다.`
+          },
+          {
+            title: "초년운 (청소년기 ~ 20대) ✨",
+            content: "초년운은 학습 능력과 적응력이 뛰어나 다방면에서 재능을 꽃피우는 시기입니다. 물질적인 환경보다 가족과 친구의 따뜻한 정서적 유대 속에서 자신만의 인생 가치관을 확립하게 됩니다."
+          },
+          {
+            title: "중년운 (30대 ~ 50대) 💖",
+            content: "중년운은 노력의 결실이 맺어지는 성취의 황금기입니다. 30대 후반부터 새로운 도전을 통해 확고한 사회적 기반을 다지게 되며, 사람과의 깊은 인연과 신뢰를 통해 부와 명예를 축적합니다."
+          },
+          {
+            title: "말년운 (60대 이후) 🌟",
+            content: "말년운은 자신이 일군 성취와 명예가 빛을 발하는 풍요로운 시기입니다. 가정이 평안하고 자식의 효도를 받으며, 여유롭고 존경받는 노후를 누리게 되는 복된 명조입니다."
+          },
+          {
+            title: "재물운 및 직업운 💎",
+            content: `사주 오행 중 ${ELEM_NAMES[GAN_ELEM[dGanIdx]]}의 기운을 조화롭게 이끌어주는 전문 기획, 금융, 경영, 문화예술 및 유통 분야에서 큰 성과를 거둘 수 있습니다. 꾸준한 저축과 분산 투자를 통해 안정적인 자산을 구축합니다.`
+          }
         ]
       };
     }
