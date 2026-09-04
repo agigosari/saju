@@ -680,7 +680,7 @@
     <div id="loadingBox" class="m-loading">
       <div class="loading-heart">💖</div>
       <p style="font-family: 'Noto Serif KR', serif; font-size: 1.05rem; font-weight: 800; color: var(--pink-deep); margin-top: 8px;">
-        신한라이프 사주 운세를 계산 중이에요... 🌸
+        정통 사주 운세를 계산 중이에요... 🌸
       </p>
     </div>
 
@@ -810,10 +810,10 @@
       <section class="manse-cta-banner">
         <span class="manse-badge">📖 정통 명리 전문 분석</span>
         <h3 class="manse-title">내 사주 정밀 만세력 보러가기 ➔</h3>
-        <p class="manse-desc">천간·지지, 지장간, 12운성, 신살, 대운·세운까지<br>신한라이프 정통 명리학 원국표로 한눈에 확인해보세요!</p>
+        <p class="manse-desc">천간·지지, 지장간, 12운성, 신살, 대운·세운까지<br>정통 명리학 원국표로 한눈에 확인해보세요!</p>
         <button type="button" class="btn-go-manse" onclick="openManse()">
           <span>📖</span>
-          <span>신한라이프 정통 만세력 바로보기</span>
+          <span>정통 만세력 바로보기</span>
           <span>➔</span>
         </button>
       </section>
@@ -827,7 +827,7 @@
 
     <!-- 푸터 -->
     <footer class="m-footer-note">
-      <p>데이터 제공: <a href="https://www.shinhanlife.co.kr/hp/cdhg0130.do" target="_blank" rel="noopener">신한라이프 운세/사주(cdhg0130.do)</a></p>
+      <p>데이터 제공: <a href="https://www.shinhanlife.co.kr/hp/cdhg0130.do" target="_blank" rel="noopener">정통 명리 운세/사주(cdhg0130.do)</a></p>
       <p style="margin-top: 2px;">© 2026 Lovely Mobile Saju. All Rights Reserved 🌸</p>
     </footer>
   </div>
@@ -1063,7 +1063,7 @@
 
     // 만세력 보러가기 액션
     function openManse() {
-      // 신한라이프 사주/만세력 공식 페이지로 이동
+      // 정통 명리 사주/만세력 공식 페이지로 이동
       const url = 'https://www.shinhanlife.co.kr/hp/cdhg0130.do';
       window.open(url, '_blank', 'noopener,noreferrer');
     }
@@ -1074,14 +1074,14 @@
         alert('먼저 사주를 조회해주세요 🌸');
         return;
       }
-      let t = `[🌸 신한라이프 러블리 사주: ${lastData.title}]\n`;
+      let t = `[🌸 러블리 수롱의 사주: ${lastData.title}]\n`;
       t += `사주원국: 년(${lastData.pillars.year.ganHan}${lastData.pillars.year.jiHan}) 월(${lastData.pillars.month.ganHan}${lastData.pillars.month.jiHan}) 일(${lastData.pillars.day.ganHan}${lastData.pillars.day.jiHan}) 시(${lastData.pillars.hour.ganHan}${lastData.pillars.hour.jiHan})\n`;
       if (lastData.sections) {
         lastData.sections.slice(0, 2).forEach(s => {
           t += `• ${s.title}: ${s.content.slice(0, 60)}...\n`;
         });
       }
-      t += `\n출처: 신한라이프 운세/사주 (https://agigosari.github.io/saju/)`;
+      t += `\n출처: 정통 명리 운세/사주 (https://agigosari.github.io/saju/)`;
       navigator.clipboard.writeText(t).then(() => {
         alert('사주 요약이 클립보드에 복사되었어요! 💖');
       });
