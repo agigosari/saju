@@ -2603,29 +2603,8 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
           hg.textContent = p.hiddenGan || '-';
         }
       }
-    }GanHan`);
-      const g = document.getElementById(`${type}Gan`);
-      const gt = document.getElementById(`${type}GanTenGod`);
-      const jh = document.getElementById(`${type}JiHan`);
-      const j = document.getElementById(`${type}Ji`);
-      const jt = document.getElementById(`${type}JiTenGod`);
-
-      if (gh) {
-        gh.textContent = p.ganHan || '-';
-        gh.className = `hanja-sq ${getElemColor(p.gan)}`;
-      }
-      if (g) g.textContent = p.gan || '-';
-      if (gt) gt.textContent = p.ganTenGod || (type === 'day' ? '일원(나)' : '-');
-
-      if (jh) {
-        jh.textContent = p.jiHan || '-';
-        jh.className = `hanja-sq ${getElemColor(p.ji)}`;
-      }
-      if (j) j.textContent = p.ji || '-';
-      if (jt) jt.textContent = p.jiTenGod || '-';
     }
 
-    
     // 상대방 생년월일 셀렉트 초기화
     const ySel2 = document.getElementById('birthYear2');
     const mSel2 = document.getElementById('birthMonth2');
@@ -2758,7 +2737,7 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
         const cleanTit = sec.title.replace(/연인궁합연인궁합/g, '연인 궁합 👩‍❤️‍👨')
                                   .replace(/결혼궁합결혼궁합/g, '결혼 궁합 💍')
                                   .replace(/친구궁합친구궁합/g, '친구 & 케미 궁합 ☕')
-                                  .replace(/직장 / 동료궁합직장 / 동료궁합/g, '동료 & 시너지 궁합 💼')
+                                  .replace(/직장 \/ 동료궁합직장 \/ 동료궁합/g, '동료 & 시너지 궁합 💼')
                                   .replace(/(.{2,10})\1/, '$1');
 
         const card = document.createElement('div');
@@ -2868,7 +2847,6 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
 
       // 12운성 (장생, 목욕, 관대, 건록, 제왕, 쇠, 병, 사, 묘, 절, 태, 양)
       const UNSEONG_NAMES = ["장생", "목욕", "관대", "건록", "제왕", "쇠", "병", "사", "묘", "절", "태", "양"];
-      // 일간별 장생 위치
       const JANGSAENG_START = {
         0: 11, // 甲 -> 亥
         1: 6,  // 乙 -> 午 (역행)
@@ -2894,7 +2872,7 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
         return UNSEONG_NAMES[dist];
       }
 
-      // 십성 산출 함수 ( 및 명리학 표준: 정인은 '인수')
+      // 십성 산출 함수 (신한라이프 및 명리학 표준: 정인은 '인수')
       function calcTenGod(meGanIdx, targetElem, targetIsYang) {
         const meElem = GAN_ELEM[meGanIdx];
         const meIsYang = (meGanIdx % 2 === 0);
@@ -2952,12 +2930,11 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
       if (d < solarCutoff[solMonthIdx]) {
         solMonthIdx = (solMonthIdx - 1 + 12) % 12;
       }
-      // 절기월에 따른 지지: 입춘(寅:2)부터 시작
-      const monthBranchMap = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0]; // 0월(축), 1월(인), 2월(묘)...
+      const monthBranchMap = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0];
       const mJiIdx = monthBranchMap[solMonthIdx];
 
-      // 오호둔월법 (연간에 따른 인월의 천간)
-      const yearToMonthGanStart = [2, 4, 6, 8, 0][yGanIdx % 5]; // 甲己->丙, 乙庚->戊, 丙辛->庚, 丁壬->壬, 戊癸->甲
+      // 오호둔월법
+      const yearToMonthGanStart = [2, 4, 6, 8, 0][yGanIdx % 5];
       const monthOffset = (mJiIdx - 2 + 12) % 12;
       const mGanIdx = (yearToMonthGanStart + monthOffset) % 10;
 
@@ -2968,7 +2945,7 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
       };
       const hCode = payload.birth_hour || "12";
       const hJiIdx = hourBranchMap[hCode] !== undefined ? hourBranchMap[hCode] : 6;
-      const dayToHourGanStart = [0, 2, 4, 6, 8][dGanIdx % 5]; // 甲己->甲, 乙庚->丙, 丙辛->戊, 丁壬->庚, 戊癸->壬
+      const dayToHourGanStart = [0, 2, 4, 6, 8][dGanIdx % 5];
       const hGanIdx = (dayToHourGanStart + hJiIdx) % 10;
 
       // 천간 지지 문자열 조합
@@ -2981,8 +2958,8 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
         const jYY = JI_YY[jIdx];
 
         return {
-          gan: `${gYY} ${ganHan} ${ELEM_NAMES[ganElem]}`,
-          ji: `${jYY} ${jiHan} ${ELEM_NAMES[jiElem]}`,
+          gan: gYY + " " + ganHan + " " + ELEM_NAMES[ganElem],
+          ji: jYY + " " + jiHan + " " + ELEM_NAMES[jiElem],
           ganHan: ganHan,
           jiHan: jiHan,
           ganTenGod: isDay ? "일원(나)" : calcTenGod(dGanIdx, ganElem, gYY === "陽"),
@@ -2997,7 +2974,7 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
       const dayPillar = makePillar(dGanIdx, dJiIdx, true);
       const hourPillar = makePillar(hGanIdx, hJiIdx);
 
-      // 5. 오행 에너지 정밀 계산 (가중치: 천간 10, 지지 15, 월지 30)
+      // 5. 오행 에너지 정밀 계산
       const elemScores = [0, 0, 0, 0, 0];
       elemScores[GAN_ELEM[yGanIdx]] += 10;
       elemScores[JI_ELEM[yJiIdx]] += 15;
@@ -3009,14 +2986,14 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
       elemScores[JI_ELEM[hJiIdx]] += 15;
 
       const myElem = GAN_ELEM[dGanIdx];
-      const supportScore = elemScores[myElem] + elemScores[(myElem + 4) % 5]; // 인성과 비겁 점수
+      const supportScore = elemScores[myElem] + elemScores[(myElem + 4) % 5];
       const isStrong = supportScore >= 45;
       const strengthLabel = isStrong ? "신강 (身强)" : "신약 (身弱)";
 
       // 6. 대운 계산 (10년 주기)
       const isYangMan = (payload.gender === "M" && yGanIdx % 2 === 0);
       const isYinWoman = (payload.gender === "F" && yGanIdx % 2 === 1);
-      const isForward = isYangMan || isYinWoman; // 순행 vs 역행
+      const isForward = isYangMan || isYinWoman;
 
       const daewunList = [];
       const daewunStartAge = 7;
@@ -3025,8 +3002,8 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
         const dwGIdx = (mGanIdx + step + 100) % 10;
         const dwJIdx = (mJiIdx + step + 120) % 12;
         daewunList.push({
-          age: `${daewunStartAge + (i - 1) * 10}세~`,
-          ganji: `${GANS[dwGIdx]}${JIS[dwJIdx]}`
+          age: (daewunStartAge + (i - 1) * 10) + "세~",
+          ganji: GANS[dwGIdx] + JIS[dwJIdx]
         });
       }
 
@@ -3039,7 +3016,7 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
       };
 
       const dayElementStr = ELEM_NAMES[GAN_ELEM[dGanIdx]];
-      const dayGanjiName = `${GANS[dGanIdx]}${JIS[dJiIdx]}`;
+      const dayGanjiName = GANS[dGanIdx] + JIS[dJiIdx];
 
       return {
         title: titles[payload.unse_code] || '평생운세 명리 분석',
@@ -3058,13 +3035,13 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
           strength: strengthLabel
         },
         daewun: {
-          description: `회원님은 ${daewunStartAge}세를 기준으로 10년 단위로 인생의 대운(大運) 흐름이 변화합니다 🌸`,
+          description: "회원님은 " + daewunStartAge + "세를 기준으로 10년 단위로 인생의 대운(大運) 흐름이 변화합니다 🌸",
           stages: daewunList
         },
         sections: [
           {
             title: "사주 본질과 성향 (일주: " + dayGanjiName + ") 🌸",
-            content: `회원님은 천간 ${GANS[dGanIdx]}(${dayElementStr})의 기운을 타고난 ${dayGanjiName} 일주입니다. 주관이 뚜렷하고 배려심이 깊으며, 신뢰와 인덕을 바탕으로 주변 사람들의 중심이 되는 사주입니다. ${strengthLabel}의 사주로 오행의 균형을 맞출수록 운세가 더욱 크게 번창합니다.`
+            content: "회원님은 천간 " + GANS[dGanIdx] + "(" + dayElementStr + ")의 기운을 타고난 " + dayGanjiName + " 일주입니다. 주관이 뚜렷하고 배려심이 깊으며, 신뢰와 인덕을 바탕으로 주변 사람들의 중심이 되는 사주입니다. " + strengthLabel + "의 사주로 오행의 균형을 맞출수록 운세가 더욱 크게 번창합니다."
           },
           {
             title: "초년운 (청소년기 ~ 20대) ✨",
@@ -3080,101 +3057,7 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
           },
           {
             title: "재물운 및 직업운 💎",
-            content: `사주 오행 중 ${ELEM_NAMES[GAN_ELEM[dGanIdx]]}의 기운을 조화롭게 이끌어주는 전문 기획, 금융, 경영, 문화예술 및 유통 분야에서 큰 성과를 거둘 수 있습니다. 꾸준한 저축과 분산 투자를 통해 안정적인 자산을 구축합니다.`
-          }
-        ]
-      };
-    };
-
-      const yearPillar = makePillar(yGanIdx, yJiIdx);
-      const monthPillar = makePillar(mGanIdx, mJiIdx);
-      const dayPillar = makePillar(dGanIdx, dJiIdx, true);
-      const hourPillar = makePillar(hGanIdx, hJiIdx);
-
-      // 5. 오행 에너지 정밀 계산 (가중치: 천간 10, 지지 15, 월지 30)
-      const elemScores = [0, 0, 0, 0, 0];
-      elemScores[GAN_ELEM[yGanIdx]] += 10;
-      elemScores[JI_ELEM[yJiIdx]] += 15;
-      elemScores[GAN_ELEM[mGanIdx]] += 10;
-      elemScores[JI_ELEM[mJiIdx]] += 30; // 월지(득령) 가중치
-      elemScores[GAN_ELEM[dGanIdx]] += 10;
-      elemScores[JI_ELEM[dJiIdx]] += 15;
-      elemScores[GAN_ELEM[hGanIdx]] += 10;
-      elemScores[JI_ELEM[hJiIdx]] += 15;
-
-      const myElem = GAN_ELEM[dGanIdx];
-      const supportScore = elemScores[myElem] + elemScores[(myElem + 4) % 5]; // 인성과 비겁 점수
-      const isStrong = supportScore >= 45;
-      const strengthLabel = isStrong ? "신강 (身强)" : "신약 (身弱)";
-
-      // 6. 대운 계산 (10년 주기)
-      const isYangMan = (payload.gender === "M" && yGanIdx % 2 === 0);
-      const isYinWoman = (payload.gender === "F" && yGanIdx % 2 === 1);
-      const isForward = isYangMan || isYinWoman; // 순행 vs 역행
-
-      const daewunList = [];
-      const daewunStartAge = 7;
-      for (let i = 1; i <= 8; i++) {
-        const step = isForward ? i : -i;
-        const dwGIdx = (mGanIdx + step + 100) % 10;
-        const dwJIdx = (mJiIdx + step + 120) % 12;
-        daewunList.push({
-          age: `${daewunStartAge + (i - 1) * 10}세~`,
-          ganji: `${GANS[dwGIdx]}${JIS[dwJIdx]}`
-        });
-      }
-
-      // 7. 정통 운세 풀이
-      const titles = {
-        'A042': '평생운세 명리 분석',
-        'A104': '2026 신토정비결',
-        'A102': '2026 부자되기',
-        'A027': '오늘의 운세'
-      };
-
-      const dayElementStr = ELEM_NAMES[GAN_ELEM[dGanIdx]];
-      const dayGanjiName = `${GANS[dGanIdx]}${JIS[dJiIdx]}`;
-
-      return {
-        title: titles[payload.unse_code] || '평생운세 명리 분석',
-        pillars: {
-          year: yearPillar,
-          month: monthPillar,
-          day: dayPillar,
-          hour: hourPillar
-        },
-        ohaeng: {
-          wood: elemScores[0],
-          fire: elemScores[1],
-          earth: elemScores[2],
-          metal: elemScores[3],
-          water: elemScores[4],
-          strength: strengthLabel
-        },
-        daewun: {
-          description: `회원님은 ${daewunStartAge}세를 기준으로 10년 단위로 인생의 대운(大運) 흐름이 변화합니다 🌸`,
-          stages: daewunList
-        },
-        sections: [
-          {
-            title: "사주 본질과 성향 (일주: " + dayGanjiName + ") 🌸",
-            content: `회원님은 천간 ${GANS[dGanIdx]}(${dayElementStr})의 기운을 타고난 ${dayGanjiName} 일주입니다. 주관이 뚜렷하고 배려심이 깊으며, 신뢰와 인덕을 바탕으로 주변 사람들의 중심이 되는 사주입니다. ${strengthLabel}의 사주로 오행의 균형을 맞출수록 운세가 더욱 크게 번창합니다.`
-          },
-          {
-            title: "초년운 (청소년기 ~ 20대) ✨",
-            content: "초년운은 학습 능력과 적응력이 뛰어나 다방면에서 재능을 꽃피우는 시기입니다. 물질적인 환경보다 가족과 친구의 따뜻한 정서적 유대 속에서 자신만의 인생 가치관을 확립하게 됩니다."
-          },
-          {
-            title: "중년운 (30대 ~ 50대) 💖",
-            content: "중년운은 노력의 결실이 맺어지는 성취의 황금기입니다. 30대 후반부터 새로운 도전을 통해 확고한 사회적 기반을 다지게 되며, 사람과의 깊은 인연과 신뢰를 통해 부와 명예를 축적합니다."
-          },
-          {
-            title: "말년운 (60대 이후) 🌟",
-            content: "말년운은 자신이 일군 성취와 명예가 빛을 발하는 풍요로운 시기입니다. 가정이 평안하고 자식의 효도를 받으며, 여유롭고 존경받는 노후를 누리게 되는 복된 명조입니다."
-          },
-          {
-            title: "재물운 및 직업운 💎",
-            content: `사주 오행 중 ${ELEM_NAMES[GAN_ELEM[dGanIdx]]}의 기운을 조화롭게 이끌어주는 전문 기획, 금융, 경영, 문화예술 및 유통 분야에서 큰 성과를 거둘 수 있습니다. 꾸준한 저축과 분산 투자를 통해 안정적인 자산을 구축합니다.`
+            content: "사주 오행 중 " + ELEM_NAMES[GAN_ELEM[dGanIdx]] + "의 기운을 조화롭게 이끌어주는 전문 기획, 금융, 경영, 문화예술 및 유통 분야에서 큰 성과를 거둘 수 있습니다. 꾸준한 저축과 분산 투자를 통해 안정적인 자산을 구축합니다."
           }
         ]
       };
