@@ -400,41 +400,79 @@
     .c-metal { color: #475569 !important; border-color: #cbd5e1 !important; background-color: #f8fafc !important; }
     .c-water { color: #0284c7 !important; border-color: #7dd3fc !important; background-color: #f0f9ff !important; }
 
-    /* 오행 바 */
+    /* 오행 마카롱 바 (Sweet Macaron Energy Bars) */
     .bar-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
+      gap: 10px;
+      margin-bottom: 10px;
     }
     .bar-name {
-      width: 48px;
+      width: 60px;
       font-size: 0.76rem;
       font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
     }
     .bar-track {
       flex: 1;
-      height: 9px;
-      background: #ffe4e6;
+      height: 16px;
+      background: #fff0f3;
       border-radius: var(--radius-pill);
       overflow: hidden;
+      box-shadow: inset 0 1.5px 3px rgba(0, 0, 0, 0.07);
+      border: 1px solid #fed7e2;
+      padding: 1.5px;
+      position: relative;
     }
     .bar-fill {
       height: 100%;
       border-radius: var(--radius-pill);
-      transition: width 0.8s ease;
+      transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .bar-val {
-      width: 24px;
+      min-width: 82px;
       text-align: right;
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       font-weight: 800;
+      white-space: nowrap;
+      color: var(--text-body);
     }
-    .f-wood { background: #10b981; }
-    .f-fire { background: #f43f5e; }
-    .f-earth { background: #f59e0b; }
-    .f-metal { background: #64748b; }
-    .f-water { background: #0284c7; }
+    .f-wood { background: linear-gradient(90deg, #10b981, #34d399); box-shadow: 0 1px 4px rgba(16, 185, 129, 0.35); }
+    .f-fire { background: linear-gradient(90deg, #f43f5e, #fb7185); box-shadow: 0 1px 4px rgba(244, 63, 94, 0.35); }
+    .f-earth { background: linear-gradient(90deg, #f59e0b, #fbbf24); box-shadow: 0 1px 4px rgba(245, 158, 11, 0.35); }
+    .f-metal { background: linear-gradient(90deg, #64748b, #94a3b8); box-shadow: 0 1px 4px rgba(100, 116, 139, 0.35); }
+    .f-water { background: linear-gradient(90deg, #0284c7, #38bdf8); box-shadow: 0 1px 4px rgba(2, 132, 199, 0.35); }
+
+    /* 오행 마카롱 분석 팁 박스 */
+    .ohaeng-summary-box {
+      margin-top: 14px;
+      padding: 12px;
+      background: #fff5f7;
+      border: 1px dashed #fecdd3;
+      border-radius: var(--radius-sm);
+      font-size: 0.76rem;
+      line-height: 1.65;
+    }
+    .ohaeng-summary-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+    .ohaeng-summary-item:last-child {
+      margin-bottom: 0;
+    }
+    .ohaeng-tag {
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
 
     /* 대운 가로 스크롤 */
     .daewun-scroll {
@@ -2180,34 +2218,54 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
 
       <!-- 3. 오행 마카롱 에너지 비율 -->
       <section class="m-card">
-        <h3 style="font-family: 'Noto Serif KR', serif; font-size: 1.02rem; font-weight: 800; color: var(--pink-deep); margin-bottom: 12px;">
-          🧁 五行 마카롱 에너지 비율
-        </h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <h3 style="font-family: 'Noto Serif KR', serif; font-size: 1.05rem; font-weight: 800; color: var(--pink-deep); margin: 0;">
+            🧁 五行 마카롱 에너지 비율
+          </h3>
+          <span class="badge-pink" id="ohaengStrengthBadge" style="font-size: 0.72rem; font-weight: 800;">오행 조화</span>
+        </div>
+
         <div>
           <div class="bar-row">
             <span class="bar-name c-wood">🌿 木(목)</span>
             <div class="bar-track"><div class="bar-fill f-wood" id="bWood" style="width:0%"></div></div>
-            <span class="bar-val c-wood" id="vWood">0</span>
+            <span class="bar-val c-wood" id="vWood">0% (0점)</span>
           </div>
           <div class="bar-row">
             <span class="bar-name c-fire">🔥 火(화)</span>
             <div class="bar-track"><div class="bar-fill f-fire" id="bFire" style="width:0%"></div></div>
-            <span class="bar-val c-fire" id="vFire">0</span>
+            <span class="bar-val c-fire" id="vFire">0% (0점)</span>
           </div>
           <div class="bar-row">
             <span class="bar-name c-earth">🍯 土(토)</span>
             <div class="bar-track"><div class="bar-fill f-earth" id="bEarth" style="width:0%"></div></div>
-            <span class="bar-val c-earth" id="vEarth">0</span>
+            <span class="bar-val c-earth" id="vEarth">0% (0점)</span>
           </div>
           <div class="bar-row">
             <span class="bar-name c-metal">💎 金(금)</span>
             <div class="bar-track"><div class="bar-fill f-metal" id="bMetal" style="width:0%"></div></div>
-            <span class="bar-val c-metal" id="vMetal">0</span>
+            <span class="bar-val c-metal" id="vMetal">0% (0점)</span>
           </div>
           <div class="bar-row">
             <span class="bar-name c-water">💧 水(수)</span>
             <div class="bar-track"><div class="bar-fill f-water" id="bWater" style="width:0%"></div></div>
-            <span class="bar-val c-water" id="vWater">0</span>
+            <span class="bar-val c-water" id="vWater">0% (0점)</span>
+          </div>
+        </div>
+
+        <!-- 오행 균형 & 기운 해석 박스 -->
+        <div class="ohaeng-summary-box" id="ohaengInsightBox">
+          <div class="ohaeng-summary-item">
+            <span class="ohaeng-tag" style="background:#fee2e2; color:#b91c1c;">✨ 일주 강약</span>
+            <span id="ohSummaryStrength" style="color:var(--text-body); font-weight:700;">사주 에너지 분석 중...</span>
+          </div>
+          <div class="ohaeng-summary-item">
+            <span class="ohaeng-tag" style="background:#fef3c7; color:#b45309;">🌟 최다 기운</span>
+            <span id="ohSummaryMax" style="color:var(--text-body);">-</span>
+          </div>
+          <div class="ohaeng-summary-item">
+            <span class="ohaeng-tag" style="background:#dcfce7; color:#15803d;">🍀 행운 보완</span>
+            <span id="ohSummaryMin" style="color:var(--text-body);">-</span>
           </div>
         </div>
       </section>
@@ -2517,20 +2575,63 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
         bindCol('year', data.pillars.year);
       }
 
-      // 2. 오행 바
+      // 2. 오행 마카롱 바 및 심층 에너지 밸런스 분석
       if (data.ohaeng) {
         const o = data.ohaeng;
-        const total = (o.wood + o.fire + o.earth + o.metal + o.water) || 100;
+        const total = (o.wood + o.fire + o.earth + o.metal + o.water) || 150;
+
         const setB = (id, bid, val) => {
-          document.getElementById(id).textContent = val;
-          const pct = Math.min(100, Math.round((val / total) * 100 * 2));
-          setTimeout(() => { document.getElementById(bid).style.width = pct + '%'; }, 100);
+          const pct = Math.round((val / total) * 100);
+          const pctStr = ((val / total) * 100).toFixed(1);
+          document.getElementById(id).textContent = pctStr + '% (' + val + '점)';
+          const visualWidth = Math.min(100, Math.max(val > 0 ? 5 : 0, pct));
+          setTimeout(() => {
+            const el = document.getElementById(bid);
+            if (el) el.style.width = visualWidth + '%';
+          }, 100);
         };
+
         setB('vWood', 'bWood', o.wood);
         setB('vFire', 'bFire', o.fire);
         setB('vEarth', 'bEarth', o.earth);
         setB('vMetal', 'bMetal', o.metal);
         setB('vWater', 'bWater', o.water);
+
+        // 오행 분석 계산
+        const elems = [
+          { name: '木(목)', emoji: '🌿', val: o.wood, trait: '진취성과 기획력, 성장' },
+          { name: '火(화)', emoji: '🔥', val: o.fire, trait: '열정과 사교성, 표현력' },
+          { name: '土(토)', emoji: '🍯', val: o.earth, trait: '신뢰와 포용력, 안정감' },
+          { name: '金(금)', emoji: '💎', val: o.metal, trait: '결단력과 의리, 명확함' },
+          { name: '水(수)', emoji: '💧', val: o.water, trait: '지혜와 유연성, 통찰력' }
+        ];
+
+        elems.sort((a, b) => b.val - a.val);
+        const maxE = elems[0];
+        const minE = elems[elems.length - 1];
+
+        const stText = o.strength || '오행 조화';
+        const strBadge = document.getElementById('ohaengStrengthBadge');
+        if (strBadge) {
+          strBadge.textContent = stText.includes('신약') ? '🌸 신약 (身弱)' : (stText.includes('신강') ? '💪 신강 (身强)' : stText);
+        }
+
+        const sStr = document.getElementById('ohSummaryStrength');
+        if (sStr) {
+          sStr.textContent = stText.includes(':')
+            ? stText + ' 사주 (내 기운 ' + stText.split(':')[0].trim() + '점 vs 주변 ' + stText.split(':')[1].trim() + '점)'
+            : stText + ' 사주';
+        }
+
+        const sMax = document.getElementById('ohSummaryMax');
+        if (sMax) {
+          sMax.textContent = maxE.emoji + ' ' + maxE.name + ' ' + maxE.val + '점(' + ((maxE.val / total) * 100).toFixed(1) + '%) ➔ ' + maxE.trait + '의 기운이 가장 왕성합니다.';
+        }
+
+        const sMin = document.getElementById('ohSummaryMin');
+        if (sMin) {
+          sMin.textContent = minE.emoji + ' ' + minE.name + ' ' + minE.val + '점(' + ((minE.val / total) * 100).toFixed(1) + '%) ➔ 부족한 기운을 보완하면 운세가 더욱 조화롭게 번창합니다.';
+        }
       }
 
       // 3. 대운
@@ -2974,21 +3075,52 @@ root.KoreanLunarCalendar = KoreanLunarCalendar;
       const dayPillar = makePillar(dGanIdx, dJiIdx, true);
       const hourPillar = makePillar(hGanIdx, hJiIdx);
 
-      // 5. 오행 에너지 정밀 계산
-      const elemScores = [0, 0, 0, 0, 0];
-      elemScores[GAN_ELEM[yGanIdx]] += 10;
-      elemScores[JI_ELEM[yJiIdx]] += 15;
-      elemScores[GAN_ELEM[mGanIdx]] += 10;
-      elemScores[JI_ELEM[mJiIdx]] += 30; // 월지(득령) 가중치
-      elemScores[GAN_ELEM[dGanIdx]] += 10;
-      elemScores[JI_ELEM[dJiIdx]] += 15;
-      elemScores[GAN_ELEM[hGanIdx]] += 10;
-      elemScores[JI_ELEM[hJiIdx]] += 15;
+      // 5. 오행 에너지 정밀 계산 (신한라이프 정통 명리 기준 150점 만점 역법)
+      const JI_DETAILS = {
+        0: [{ e: 4, w: 1.0 }], // 子: 癸(100%)
+        1: [{ e: 2, w: 0.6 }, { e: 3, w: 0.2 }, { e: 4, w: 0.2 }], // 丑: 己(60%), 辛(20%), 癸(20%)
+        2: [{ e: 0, w: 0.6 }, { e: 1, w: 0.25 }, { e: 2, w: 0.15 }], // 寅: 甲(60%), 丙(25%), 戊(15%)
+        3: [{ e: 0, w: 1.0 }], // 卯: 乙(100%)
+        4: [{ e: 2, w: 0.6 }, { e: 0, w: 0.25 }, { e: 4, w: 0.15 }], // 辰: 戊(60%), 乙(25%), 癸(15%)
+        5: [{ e: 1, w: 0.6 }, { e: 3, w: 0.25 }, { e: 2, w: 0.15 }], // 巳: 丙(60%), 庚(25%), 戊(15%)
+        6: [{ e: 1, w: 0.7 }, { e: 2, w: 0.3 }], // 午: 丁/丙(70%), 己(30%)
+        7: [{ e: 2, w: 0.6 }, { e: 1, w: 0.25 }, { e: 0, w: 0.15 }], // 未: 己(60%), 丁(25%), 乙(15%)
+        8: [{ e: 3, w: 0.6 }, { e: 4, w: 0.25 }, { e: 2, w: 0.15 }], // 申: 庚(60%), 壬(25%), 戊(15%)
+        9: [{ e: 3, w: 1.0 }], // 酉: 辛(100%)
+        10: [{ e: 2, w: 0.6 }, { e: 3, w: 0.25 }, { e: 1, w: 0.15 }], // 戌: 戊(60%), 辛(25%), 丁(15%)
+        11: [{ e: 4, w: 0.7 }, { e: 0, w: 0.3 }] // 亥: 壬(70%), 甲(30%)
+      };
 
+      const elemScores = [0, 0, 0, 0, 0];
+      // 천간 4개 각 10점 (총 40점)
+      [yGanIdx, mGanIdx, dGanIdx, hGanIdx].forEach(g => {
+        elemScores[GAN_ELEM[g]] += 10;
+      });
+
+      // 지지 4개 (월지 득령 45점, 일지 득지 27점, 년지 19점, 시지 19점 = 총 110점)
+      const addJiEnergy = (jIdx, pts) => {
+        const details = JI_DETAILS[jIdx] || [{ e: JI_ELEM[jIdx], w: 1.0 }];
+        details.forEach(item => {
+          elemScores[item.e] += Math.round(pts * item.w);
+        });
+      };
+      addJiEnergy(yJiIdx, 19);
+      addJiEnergy(mJiIdx, 45); // 월지 득령 가중치
+      addJiEnergy(dJiIdx, 27); // 일지 득지 가중치
+      addJiEnergy(hJiIdx, 19);
+
+      // 전체 합산 150점 정밀 보정
+      const currentSum = elemScores.reduce((a, b) => a + b, 0);
+      if (currentSum !== 150) {
+        elemScores[GAN_ELEM[dGanIdx]] += (150 - currentSum);
+      }
+
+      // 내 편 (비겁 + 인성) vs 남의 편 (식상 + 재성 + 관성)
       const myElem = GAN_ELEM[dGanIdx];
       const supportScore = elemScores[myElem] + elemScores[(myElem + 4) % 5];
-      const isStrong = supportScore >= 45;
-      const strengthLabel = isStrong ? "신강 (身强)" : "신약 (身弱)";
+      const otherScore = 150 - supportScore;
+      const isStrong = supportScore >= 75;
+      const strengthLabel = supportScore + ' : ' + otherScore + (isStrong ? '신강' : '신약');
 
       // 6. 대운 계산 (10년 주기)
       const isYangMan = (payload.gender === "M" && yGanIdx % 2 === 0);
